@@ -1,0 +1,64 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed&family=Rubik+Doodle+Shadow&family=Rubik+Doodle+Triangles&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+h1 {
+  @apply text-6xl font-bold;
+}
+h2 {
+  @apply text-4xl font-bold;
+}
+.btn-hover {
+  @apply hover:border-2 hover:border-black transition-colors duration-200;
+}
+.my-flex {
+  @apply flex justify-center items-center;
+}
+.my-border {
+  @apply border-2 border-black;
+}
+.categoriesMainDiv {
+  @apply mx-4 mt-[2.6rem];
+}
+.productDisplayDiv {
+  @apply px-8 mt-4 grid grid-cols-4 place-items-center gap-2 gap-y-4;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+:root {
+  --color-bg: #f4f4f4;
+  --color-white: #ffffff;
+  --color-sliver: #c0c0c0;
+  --color-primary: #4caf50;
+  --color-bgbtn: #f1f1f1;
+  --color-bgbtn-hover: #d6d6d6;
+  --color5: #333333;
+  --color6: #4e92c4;
+  --transistion: all 400ms ease;
+}
+#root {
+  /* border: 6px  solid blue; */
+}
+.cateInDiv.selected {
+  background-color: var(--color-bgbtn);
+  color: var(--color-primary);
+}
+.selected img {
+  height: 8.2rem !important;
+  width: 6rem !important;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}

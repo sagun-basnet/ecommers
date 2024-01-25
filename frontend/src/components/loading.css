@@ -1,0 +1,68 @@
+.loadingMain {
+  height: 100vh;
+  width: 100%;
+  position: absolute;
+  overflow: hidden;
+  top: 0;
+  z-index: 1;
+  /* display: flex; */
+}
+.loadingMain h1 {
+  position: absolute;
+  z-index: 1;
+  top: 45%;
+  font-family: "Rubik Doodle Shadow";
+  /* right: 25.4%; */
+  /* border: 2px solid red; */
+}
+.loadingMain h1 span {
+}
+.left,
+.right {
+  /* border: 2px solid black; */
+  width: 50%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+}
+.left img,
+.right img {
+  width: 20%;
+  margin-top: 10rem;
+}
+.left img {
+  position: absolute;
+  right: 0;
+}
+.right h1 {
+  left: 10px;
+  color: #000;
+  margin-top: 5rem;
+}
+.left h1 {
+  right: 10px;
+  color: #fff;
+  margin-top: 5rem;
+}
+.left {
+  background-color: #4caf50;
+  /* border-right: 2px solid #5e5e5e; */
+  animation: slideLeft 1.8s linear forwards 1s;
+}
+@keyframes slideLeft {
+  to {
+    transform: translateX(-100%);
+  }
+}
+.right {
+  /* border-left: 2px solid #5e5e5e; */
+  background-color: #c0c0c0;
+  right: 0;
+  animation: slideRight 1.8s linear forwards 1s;
+}
+@keyframes slideRight {
+  to {
+    transform: translateX(100%);
+  }
+}

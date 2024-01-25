@@ -1,0 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed&family=Rubik+Doodle+Shadow&family=Rubik+Doodle+Triangles&family=Rubik+Maps&display=swap");
+
+.navTop .logo h1 {
+  font-family: "Rubik Maps";
+}
+.navTop button {
+  /* height: 2rem; */
+  /* background-color: var(--color-bgbtn); */
+  border-radius: 0.4rem;
+}
+.navTop button:hover {
+  background-color: var(--color-bgbtn-hover);
+}
+.homeBtn button svg {
+  font-size: 1.2rem;
+}
+.navBtns button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.navBtns .signBtn:hover {
+  background-color: transparent;
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+  transition: var(--transistion);
+}
+.usersBtn .userBtn {
+  background-color: var(--color-primary);
+}
+.usersBtn .userBtn:hover {
+  background-color: transparent;
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+  transition: var(--transistion);
+}
+.navbottom .cateDiv .cateInDiv:hover img {
+  height: 8.2rem;
+  width: 6rem;
+  transition: var(--transistion);
+}
+
+.productMainDiv .productImgs .pimg {
+  /* border: 2px solid black; */
+  height: 100%;
+  width: calc(100% / 3);
+  border-radius: 0.6rem;
+  box-shadow: 1px 2px 4px 1px;
+  overflow: hidden;
+  padding: 0.2rem;
+}
+.productMainDiv .productImgs .pimg img {
+  height: 100%;
+  width: 100%;
+  border-radius: 0.6rem;
+}
+.productMainDiv .productBtn button:hover {
+  background-color: var(--color-white);
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  transition: var(--transistion);
+}
+.productMainDiv .productBtn button svg {
+  font-size: 1.2rem;
+  font-weight: bolder;
+}
+
+.footerMainDiv {
+  height: 16rem;
+  /* border: 2px solid black; */
+  color: white;
+  /* margin: 0 1rem; */
+  margin-top: 2rem;
+  background-color: #242424;
+}
