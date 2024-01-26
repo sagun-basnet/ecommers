@@ -29,7 +29,7 @@ const Deals = () => {
       img2: Bimage1,
       img3: Bimage2,
       uid: 2,
-    }
+    },
   ]
 
   return (
@@ -38,7 +38,7 @@ const Deals = () => {
       <div className="dealsProductDiv px-[2rem] mt-[1rem] grid grid-cols-2 sm:grid-cols-4 place-items-center gap-2 gap-y-6">
         {
           products.map(product => (
-            <Product key={product.pid} image={product.mainImg} image1={product.img2} image2={product.img3} name={product.pname} price={product.price} />
+            <Product key={product.pid} pid={product.pid} image={product.mainImg} image1={product.img2} image2={product.img3} name={product.pname} price={product.price} />
           ))
         }
       </div>

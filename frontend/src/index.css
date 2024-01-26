@@ -2,6 +2,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.singleProduct img {
+  @apply h-full w-full;
+}
 h1 {
   @apply text-6xl font-bold;
 }
@@ -13,6 +16,9 @@ h2 {
 }
 .my-flex {
   @apply flex justify-center items-center;
+}
+.my-grid {
+  @apply grid place-items-center;
 }
 .my-border {
   @apply border-2 border-black;

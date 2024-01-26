@@ -4,9 +4,10 @@ import "./global.css";
 import { MdUnfoldMore } from "react-icons/md";
 
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 
-const Product = ({ image, image1, image2, name, price }) => {
+const Product = ({ pid, image, image1, image2, name, price }) => {
   useEffect(() => {
     AOS.init({ duration: 1500 });
   }, []);
@@ -38,9 +39,11 @@ const Product = ({ image, image1, image2, name, price }) => {
         </div>
       </div>
       <div className="productBtn flex justify-end ">
-        <button className="rounded-[0.4rem] bg-primary p-1 my-border cursor-pointer my-flex font-bold">
-          More <MdUnfoldMore />
-        </button>
+        <Link to={`/product/${pid}`}>
+          <button className="rounded-[0.4rem] bg-primary p-1 my-border cursor-pointer my-flex font-bold">
+            More <MdUnfoldMore />
+          </button>
+        </Link>
       </div>
     </div>
   );
