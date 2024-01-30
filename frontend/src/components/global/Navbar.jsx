@@ -40,7 +40,7 @@ const Navbar = () => {
 
   const handlePost = () => {
     if (!currentUser) {
-      navigation('/signup');
+      navigation('/signin');
     }
   }
 

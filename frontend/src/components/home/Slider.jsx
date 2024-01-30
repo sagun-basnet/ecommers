@@ -15,7 +15,7 @@ const Slider = () => {
       90deg,
       hsla(235, 100%, 78%, 1) 0%,
       hsla(222, 77%, 33%, 1) 100%
-    )] flex h-[18rem] mx-[1rem] mt-[1rem]"
+    )] flex h-[16rem] mx-[1rem] mt-[1rem]"
       data-aos="fade-right"
     >
       <div className="sliderImg w-1/2 h-full">

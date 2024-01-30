@@ -11,6 +11,9 @@ h1 {
 h2 {
   @apply text-4xl font-bold;
 }
+.my-transition {
+  @apply transition-colors duration-200 ease-in-out;
+}
 .btn-hover {
   @apply hover:border-2 hover:border-black transition-colors duration-200;
 }
@@ -67,4 +70,18 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
+}
+.singlePro::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.singlePro::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.singlePro::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+.singlePro::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

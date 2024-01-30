@@ -12,6 +12,7 @@ import Loading from "./components/Loading";
 import SigninForm from "./pages/SigninForm";
 import SignupForm from "./pages/SignupForm";
 import SingleProduct from "./components/SingleProduct";
+import Checkout from "./components/Checkout";
 
 function App() {
   const Layout = () => {
@@ -65,6 +66,10 @@ function App() {
     {
       path: "/product/:pid",
       element: <SingleProduct />
+    },
+    {
+      path: "/product/checkout/:pid",
+      element: <Checkout />
     }
   ]);
   return (
