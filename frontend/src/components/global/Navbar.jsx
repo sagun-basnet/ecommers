@@ -29,10 +29,6 @@ const Navbar = () => {
     setSelectedCategory(category === selectedCategory ? null : category);
   };
 
-  // const handleLogout = () => {
-  //   logout(); // Call the original logout function
-  //   setTogglePro(false);
-  // };
   const handleLogout = async () => {
     await logout();
     setTogglePro(!togglePro);
@@ -41,6 +37,8 @@ const Navbar = () => {
   const handlePost = () => {
     if (!currentUser) {
       navigation('/signin');
+    } else {
+      navigation('/post');
     }
   }
 

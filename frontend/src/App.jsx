@@ -13,6 +13,7 @@ import SigninForm from "./pages/SigninForm";
 import SignupForm from "./pages/SignupForm";
 import SingleProduct from "./components/SingleProduct";
 import Checkout from "./components/Checkout";
+import PostForm from "./components/forms/PostForm";
 
 function App() {
   const Layout = () => {
@@ -70,7 +71,11 @@ function App() {
     {
       path: "/product/checkout/:pid",
       element: <Checkout />
-    }
+    },
+    {
+      path: "/post",
+      element: <PostForm />
+    },
   ]);
   return (
     <div className="App">
