@@ -8,7 +8,7 @@ const Footer = () => {
     AOS.init({ duration: 1500 });
   }, []);
   return (
-    <div className="footerMainDiv">
+    <div className="footerMainDiv w-full bottom-0">
       <h2 style={{ textAlign: "center" }}>Footer</h2>
     </div>
   );

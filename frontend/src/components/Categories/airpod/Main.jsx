@@ -5,112 +5,41 @@ import Image2 from "../../../images/0063188_-apple-iphone-11-pro-max-_510.jpeg";
 import Bimage from "../../../images/blackIphone.png";
 import Bimage1 from "../../../images/blackIphone1.png";
 import Bimage2 from "../../../images/blackIphone2.png";
-
-import "../categories.css";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const Main = () => {
+  const [products, setProducts] = useState([]);
+
+  const loadData = async () => {
+    const response = await axios.get("http://localhost:8800/api/post/getAllPost");
+    setProducts(response.data);
+  }
+
+  useEffect(() => {
+    loadData();
+  }, []);
+  const airpodProducts = products.filter(product => product.type === "airpod");
   return (
     <div className="categoriesMainDiv">
       <h2>Airpods :-</h2>
-      <div className="productDisplayDiv">
-        <Product
-          image={Image}
-          image1={Image1}
-          image2={Image2}
-          name="Iphone 11 pro"
-          price={55000}
-        />
-        <Product
-          image={Bimage}
-          image1={Bimage1}
-          image2={Bimage2}
-          name="Iphone 11"
-          price={50000}
-        />
-        <Product
-          image={Image}
-          image1={Image1}
-          image2={Image2}
-          name="Iphone 11 pro"
-          price={55000}
-        />
-        <Product
-          image={Bimage}
-          image1={Bimage1}
-          image2={Bimage2}
-          name="Iphone 11"
-          price={50000}
-        />
-        <Product
-          image={Image}
-          image1={Image1}
-          image2={Image2}
-          name="Iphone 11 pro"
-          price={55000}
-        />
-        <Product
-          image={Bimage}
-          image1={Bimage1}
-          image2={Bimage2}
-          name="Iphone 11"
-          price={50000}
-        />
-        <Product
-          image={Image}
-          image1={Image1}
-          image2={Image2}
-          name="Iphone 11 pro"
-          price={55000}
-        />
-        <Product
-          image={Bimage}
-          image1={Bimage1}
-          image2={Bimage2}
-          name="Iphone 11"
-          price={50000}
-        />
-        <Product
-          image={Image}
-          image1={Image1}
-          image2={Image2}
-          name="Iphone 11 pro"
-          price={55000}
-        />
-        <Product
-          image={Bimage}
-          image1={Bimage1}
-          image2={Bimage2}
-          name="Iphone 11"
-          price={50000}
-        />
-        <Product
-          image={Image}
-          image1={Image1}
-          image2={Image2}
-          name="Iphone 11 pro"
-          price={55000}
-        />
-        <Product
-          image={Bimage}
-          image1={Bimage1}
-          image2={Bimage2}
-          name="Iphone 11"
-          price={50000}
-        />
-        <Product
-          image={Image}
-          image1={Image1}
-          image2={Image2}
-          name="Iphone 11 pro"
-          price={55000}
-        />
-        <Product
-          image={Bimage}
-          image1={Bimage1}
-          image2={Bimage2}
-          name="Iphone 11"
-          price={50000}
-        />
+      <div className="productDisplayDiv grid-flow-row-dense w-full relative">
+        {airpodProducts.length === 0 ? (
+          <h1 className="h-32 text-center col-span-4 text-primary">No products found</h1>
+        ) : (
+          airpodProducts.map(product => (
+            <Product
+              key={product.pid}
+              pid={product.pid}
+              image={product.mainImg}
+              image1={product.img2}
+              image2={product.img3}
+              name={product.pname}
+              price={product.price}
+            />
+          ))
+        )}
+
       </div>
     </div>
   );

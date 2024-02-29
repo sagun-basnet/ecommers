@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed&family=Rubik+Doodle+Shadow&family=Rubik+Doodle+Triangles&family=Rubik+Maps&display=swap");
 
-.navTop .logo h1 {
+.navTop .logo h1,
+.navTop .logo h1 span {
   font-family: "Rubik Maps";
 }
 .navTop button {

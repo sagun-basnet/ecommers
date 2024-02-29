@@ -37,6 +37,7 @@ h2 {
   padding: 0;
   box-sizing: border-box;
   scroll-behavior: smooth;
+  @apply font-heading;
 }
 :root {
   --color-bg: #f4f4f4;

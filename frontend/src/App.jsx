@@ -14,6 +14,7 @@ import SignupForm from "./pages/SignupForm";
 import SingleProduct from "./components/SingleProduct";
 import Checkout from "./components/Checkout";
 import PostForm from "./components/forms/PostForm";
+import ThankYou from "./components/ThankYou";
 
 function App() {
   const Layout = () => {
@@ -76,10 +77,14 @@ function App() {
       path: "/post",
       element: <PostForm />
     },
+    {
+      path: "/finished/:pid",
+      element: <ThankYou />
+    },
   ]);
   return (
     <div className="App">
-      <Loading />
+      {/* <Loading /> */}
       <RouterProvider router={router} />
     </div>
   );
