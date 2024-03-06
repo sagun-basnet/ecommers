@@ -1,12 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router';
 
-import Image from "../images/phone.png";
-import Image1 from "../images/1080-iPhone_11_R_4.png";
-import Image2 from "../images/0063188_-apple-iphone-11-pro-max-_510.jpeg";
-import Bimage from "../images/blackIphone.png";
-import Bimage1 from "../images/blackIphone1.png";
-import Bimage2 from "../images/blackIphone2.png";
 import { AuthContext } from '../context/authContext';
 
 import { IoMdArrowRoundBack } from "react-icons/io";
@@ -17,11 +11,34 @@ const Checkout = () => {
     const { currentUser } = useContext(AuthContext);
 
     const [products, setProducts] = useState([]);
+    const [esewa, setEsewa] = useState({});
+    // console.log(esewa?.signature);
+    // console.log(esewa?.uuid);
+
+    const loadEsewa = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8800/api/verifyEsewa/${pid}`);
+            setEsewa(response.data);
+            // console.log(response.data);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    useEffect(() => {
+        loadEsewa();
+    }, []);
 
     const loadData = async () => {
-        const response = await axios.get(`http://localhost:8800/api/post/getPost/${pid}`);
-        // console.log(response);
-        setProducts(response.data);
+        try {
+
+            const response = await axios.get(`http://localhost:8800/api/post/getPost/${pid}`);
+            // console.log(response);
+            setProducts(response.data);
+
+        } catch (err) {
+            console.log("error aayo data fetch garda".err);
+        }
     }
 
     useEffect(() => {
@@ -88,9 +105,25 @@ const Checkout = () => {
                     <button onClick={() => navigation(-1)} className='rounded-md p-2 px-6 bg-[#FF0000] hover:bg-red-600 my-transition font-bold absolute bottom-0 right-6 text-white'>Cancel</button>
 
                     <h1 className='mb-16'>Payment Option</h1>
-                    <div className="esewa w-full my-grid">
-                        <button className=' border-2 p-2 px-4 w-[60%] rounded-md bg-[#67BD4C]' onClick={handleBuy}>pay via esewa</button>
-                    </div>
+                    <form action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method="POST" className='w-full'>
+                        <input hidden type="text" id="amount" name="amount" value={products[0]?.price} required />
+                        <input hidden type="text" id="tax_amount" name="tax_amount" value="0" required />
+                        <input hidden type="text" id="total_amount" name="total_amount" value={products[0]?.price} required />
+                        <input hidden type="text" id="transaction_uuid" name="transaction_uuid" value={esewa?.uuid} required />
+                        <input hidden type="text" id="product_code" name="product_code" value="EPAYTEST" required />
+                        <input hidden type="text" id="product_service_charge" name="product_service_charge" value="0" required />
+                        <input hidden type="text" id="product_delivery_charge" name="product_delivery_charge" value="0" required />
+                        <input hidden type="text" id="success_url" name="success_url" value={`http://localhost:8800/api/success/${pid}`} required />
+                        <input hidden type="text" id="failure_url" name="failure_url" value="http://localhost:5173" required />
+                        <input hidden type="text" id="signed_field_names" name="signed_field_names"
+                            value="total_amount,transaction_uuid,product_code" required />
+                        <input hidden type="text" id="signature" name="signature" value={esewa?.signature} required />
+                        <div className="esewa w-full my-grid">
+                            <button className=' p-2 px-4 w-[60%] rounded-md bg-[#67BD4C]' /*onClick={handleBuy}*/ type='submit'>pay via esewa</button>
+                        </div>
+                    </form>
+
+
                     <div className="w-full h-0 border-2"></div>
                     <div className="khalti w-full my-grid">
                         <button className='border-2 p-2 px-4 w-[60%] rounded-md bg-[#613494] text-white' onClick={handleBuy}>pay via khelti</button>

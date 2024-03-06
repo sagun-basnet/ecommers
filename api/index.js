@@ -10,6 +10,7 @@ import authRoutes from "./routes/auth.js";
 import postRoutes from "./routes/post.js";
 import buyRoutes from "./routes/buy.js";
 import sellerRoutes from "./routes/seller.js";
+import esewaRoutes from "./routes/esewa.js";
 import { createPost } from "./controllers/post.js";
 
 const app = express();
@@ -55,6 +56,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/post", postRoutes);
 app.use("/api", buyRoutes);
 app.use("/api", sellerRoutes);
+app.use("/api", esewaRoutes);
 
 app.listen(8800, () => {
   console.log("Connect vayo");
