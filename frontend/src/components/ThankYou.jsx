@@ -8,17 +8,49 @@ const ThankYou = () => {
     const { pid } = useParams();
     const navigate = useNavigate();
     const loadData = async () => {
-        const response = await axios.get(`http://localhost:8800/api/getSeller/${pid}`);
-        setMyData(response.data);
-        if (response.status === 200) {
-            // console.log("vayo hai ");
-        } else {
-            console.log("Error Displaying the seller details..");
+        try {
+            const response1 = await axios.get(`http://localhost:8800/api/getSeller/${pid}`);
+            if (response1.status === 200) {
+                console.log("Seller details loaded successfully");
+                setMyData(response1.data);
+            } else {
+                console.log("Error loading seller details");
+            }
+
+            const userData = JSON.parse(localStorage.getItem('user'));
+            if (!userData || !userData.uid) {
+                throw new Error("User ID not found in local storage");
+            }
+            const userId = userData.uid;
+            console.log("User ID:", userId);
+
+            const response2 = await axios.put(`http://localhost:8800/api/buy/${pid}`, { userId });
+            if (response2.status === 200) {
+                console.log("Buy request successful");
+            } else {
+                console.log("Error sending buy request");
+            }
+        } catch (error) {
+            console.error("Error in loadData:", error);
         }
-    }
+    };
+
     useEffect(() => {
         loadData();
     }, []);
+
+    // const sendUser = async () => {
+    //     const userId = JSON.parse(localStorage.getItem('user')).uid;
+    //     const response = await axios.post(`http://localhost:8800/api/buy/${pid}`, { userId: userId });
+    //     if (response.status === 200) {
+    //         console.log("vayo hai ");
+    //     } else {
+    //         console.log("Error aayo..");
+    //     }
+    // }
+    // useEffect(() => {
+    //     sendUser();
+    // }, []);
     return (
         <div className='font-heading h-[100vh] w-full grid place-items-center'>
             <div className="flex  w-[90%] h-[90%] justify-center items-center">

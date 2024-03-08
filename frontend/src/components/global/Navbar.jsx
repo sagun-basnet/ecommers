@@ -79,9 +79,11 @@ const Navbar = () => {
             </button>
             {currentUser?.role === "user" ? (
               <div className="usersBtn w-[70%]  flex justify-evenly">
-                <button className="dashBtn my-border btn-hover w-[3.4rem] text-[1.4rem]">
-                  <RiDashboardFill />
-                </button>
+                <NavLink to="/user/dashboard">
+                  <button className="dashBtn my-border btn-hover w-[3.4rem] h-10 text-[1.4rem]">
+                    <RiDashboardFill />
+                  </button>
+                </NavLink>
                 <button className="userBtn w-[4.4rem] text-[1.2rem] flex justify-between py-[0.6em] bg-primary" onClick={() => setTogglePro(!togglePro)} >
                   <FaUser /> <FaAngleDown />
                 </button>

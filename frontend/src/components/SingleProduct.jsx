@@ -136,12 +136,12 @@ const SingleProduct = () => {
                     {/* <RelatedProduct pid={pid} /> */}
                     <div className="flex flex-col w-full items-center">
                         <h2 className='text-primary'>Related Product</h2>
-                        <div className="flex w-full gap-2 mt-6">
+                        <div className="grid grid-cols-2 w-full gap-2 mt-6">
                             {
                                 related.length > 1 ? (
                                     related.map(product => (
-                                        (parseInt(pid) !== product.pid) && (
-                                            <div className="flex w-1/2 border-2 border-black">
+                                        (parseInt(pid) !== product.pid) && (product.buyer_id === null) && (
+                                            <div className="flex w-full border-2 border-black">
                                                 <div className="w-[40%] h-[8rem]">
                                                     <img src={`http://localhost:8800${product.mainImg}`} alt="" />
                                                 </div>

@@ -29,6 +29,7 @@ const Main = () => {
           <h1 className="h-32 text-center col-span-4 text-primary">No products found</h1>
         ) : (
           iphoneProducts.map(product => (
+            product.buyer_id === null &&
             <Product
               key={product.pid}
               pid={product.pid}

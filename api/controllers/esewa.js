@@ -2,6 +2,7 @@ import CryptoJS from "crypto-js";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import dotenv from "dotenv";
+import { db } from "../db.js";
 // require("dotenv").config();
 dotenv.config();
 
@@ -40,42 +41,33 @@ export const handleEsewaSuccess = async (req, res) => {
   const pid = req.params.id;
   // console.log(data);
   let decodedString = atob(data);
-  // console.log("dec_string", decodedString);
-  // console.log("ds==", typeof decodedString);
-  // const obj = JSON.parse(decodedString);
-  // console.log("obj==", typeof obj);
   decodedString = JSON.parse(decodedString);
 
   switch (decodedString.status) {
     // compare the signature once again for better security
     case "COMPLETE":
       try {
-        // console.log(req.session.user);
-
-        // const book = await Book.findById(id)
-
-        // const uid = uuidv4();
         const message = `total_amount=${decodedString.total_amount},transaction_uuid=${decodedString.transaction_uuid},product_code=${decodedString.product_code}`;
-        // console.log(message);
+
         const hash = CryptoJS.HmacSHA256(message, process.env.ESEWASECRET);
         const hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
-        console.log(hashInBase64, "hashInBase64");
-        console.log(decodedString.signature, "sig");
-        console.log(hashInBase64 == decodedString.signature);
+        // console.log(hashInBase64, "hashInBase64");
+        // console.log(decodedString.signature, "sig");
+        // console.log(hashInBase64 == decodedString.signature);
         const result = hashInBase64 == decodedString.signature;
         // if (result == false) {
         //   throw "Hash value not matched";
         // }
+        const sql = "INSERT into `order`(`pid`) value(?)";
+        db.query(sql, parseInt(pid), (err, data) => {
+          if (err) {
+            console.error("Error inserting order:", err);
+            return res.status(500).json({ error: "Failed to create order." });
+          }
 
-        // await Order.create({
-        //     orderedBy: user_id,
-        //     bookId: book.id,
-        //     quantity: 1,
-        //     price: book.price
-
-        // })
-
-        res.redirect(`http://localhost:5173/finished/${pid}`);
+          // After successfully inserting the order, send the redirect response
+          res.redirect(`http://localhost:5173/finished/${pid}`);
+        });
       } catch (error) {
         console.log("error occoured", error);
       }

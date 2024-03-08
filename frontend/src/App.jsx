@@ -15,6 +15,14 @@ import SingleProduct from "./components/SingleProduct";
 import Checkout from "./components/Checkout";
 import PostForm from "./components/forms/PostForm";
 import ThankYou from "./components/ThankYou";
+import UserDashboard from "./components/userDashboard/Main";
+import Sidebar from "./components/userDashboard/Sidebar";
+import Topbar from "./components/userDashboard/Topbar";
+import Product from "./components/userDashboard/Product";
+import Sale from "./components/userDashboard/Sale";
+import Purchase from "./components/userDashboard/Purchase";
+import Dashboard from "./components/userDashboard/Dashboard";
+import Main from "./components/userDashboard/Main";
 
 function App() {
   const Layout = () => {
@@ -55,7 +63,7 @@ function App() {
           path: "/macbook",
           element: <MacBook />,
         },
-      ],
+      ]
     },
     {
       path: "/signin",
@@ -80,6 +88,40 @@ function App() {
     {
       path: "/finished/:pid",
       element: <ThankYou />
+    },
+    // {
+    //   path: "/user/dashboard",
+    //   element: <UserDashboard />
+    // },
+    //user dashboard route
+    {
+      path: "/user/dashboard",
+      element: (
+        <div>
+          {/* <Sidebar />
+          <Topbar />
+          <Outlet /> */}
+          <Main />
+        </div>
+      ),
+      children: [
+        {
+          path: "/user/dashboard/",
+          element: <Dashboard />
+        },
+        {
+          path: "/user/dashboard/my-product",
+          element: <Product />
+        },
+        {
+          path: "/user/dashboard/my-sale",
+          element: <Sale />
+        },
+        {
+          path: "/user/dashboard/my-purchase",
+          element: <Purchase />
+        },
+      ],
     },
   ]);
   return (
