@@ -84,11 +84,11 @@ const Navbar = () => {
                     <RiDashboardFill />
                   </button>
                 </NavLink>
-                <button className="userBtn w-[4.4rem] text-[1.2rem] flex justify-between py-[0.6em] bg-primary" onClick={() => setTogglePro(!togglePro)} >
+                <button className=" w-[4.4rem] text-[1.2rem] flex justify-between py-[0.6em] bg-pink-500" onClick={() => setTogglePro(!togglePro)} >
                   <FaUser /> <FaAngleDown />
                 </button>
                 {
-                  togglePro && (<div className="absolute flex flex-col rigth-0 top-16">
+                  togglePro && (<div className="absolute flex flex-col rigth-0 top-16 bg-black">
                     <h3>{currentUser?.name}</h3>
                     <button onClick={handleLogout}>Logout</button>
                   </div>)

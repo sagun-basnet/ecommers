@@ -11,13 +11,13 @@ import postRoutes from "./routes/post.js";
 import buyRoutes from "./routes/buy.js";
 import sellerRoutes from "./routes/seller.js";
 import esewaRoutes from "./routes/esewa.js";
+import orderRoutes from "./routes/order.js";
 import { createPost } from "./controllers/post.js";
 
 const app = express();
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", true);
-
   next();
 });
 
@@ -57,6 +57,7 @@ app.use("/api/post", postRoutes);
 app.use("/api", buyRoutes);
 app.use("/api", sellerRoutes);
 app.use("/api", esewaRoutes);
+app.use("/api", orderRoutes);
 
 app.listen(8800, () => {
   console.log("Connect vayo");

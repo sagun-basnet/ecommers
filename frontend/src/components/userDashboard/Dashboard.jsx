@@ -1,9 +1,59 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { LiaShoppingBagSolid } from "react-icons/lia";
 import { CiShoppingTag } from "react-icons/ci";
 import { GiShoppingCart } from "react-icons/gi";
+import { AuthContext } from '../../context/authContext';
+import axios from 'axios';
 
 const Dashboard = () => {
+    const { currentUser } = useContext(AuthContext);
+    const user_id = currentUser?.uid;
+    const [myData, setMyData] = useState([]);
+    const [myPost, setMyPost] = useState([]);
+    console.log(myPost);
+    const [count, setCount] = useState(0);
+    console.log(myData);
+
+    const loadData = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8800/api/allBuyer/${user_id}`)
+            console.log(response);
+            setMyData(response.data);
+            if (response.status === 200) {
+                console.log("data aayo");
+            } else {
+                console.log("Aayana data");
+            }
+        } catch (e) {
+            console.log("Error while fetching data: ".e);
+        }
+    }
+    const loadMyPost = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8800/api/post/getPostCountByUser/${user_id}`)
+            console.log(response);
+            setMyPost(response.data);
+            if (response.status === 200) {
+                console.log("data aayo");
+            } else {
+                console.log("Aayana data");
+            }
+        } catch (e) {
+            console.log("Error while fetching data: ".e);
+        }
+    }
+
+    useEffect(() => {
+        loadData();
+    }, []);
+    useEffect(() => {
+        loadMyPost();
+    }, []);
+
+    useEffect(() => {
+        setCount(myData.length); // Update count when myData changes
+    }, [myData]);
+
     return (
         <div className='p-10 flex flex-col'>
             <div className="flex gap-16">
@@ -12,7 +62,7 @@ const Dashboard = () => {
                         <LiaShoppingBagSolid />
                     </div>
                     <div className="flex flex-col justify-center items-center">
-                        <span className='text-2xl font-bold text-primary'>23</span>
+                        <span className='text-2xl font-bold text-primary'>{myPost[0]?.uid_count}</span>
                         <span>Total Products</span>
                     </div>
                 </div>
@@ -22,7 +72,7 @@ const Dashboard = () => {
                         <CiShoppingTag />
                     </div>
                     <div className="flex flex-col justify-center items-center">
-                        <span className='text-2xl font-bold text-primary'>23</span>
+                        <span className='text-2xl font-bold text-primary'>{count}</span>
                         <span>Total Sales</span>
                     </div>
                 </div>
@@ -32,7 +82,7 @@ const Dashboard = () => {
                         <GiShoppingCart />
                     </div>
                     <div className="flex flex-col justify-center items-center">
-                        <span className='text-2xl font-bold text-primary'>23</span>
+                        <span className='text-2xl font-bold text-primary'>{myPost[0]?.buyer_id_count}</span>
                         <span>Total Purchase</span>
                     </div>
                 </div>
@@ -54,30 +104,25 @@ const Dashboard = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr
-                                className="border-b transition duration-300 ease-in-out ">
-                                <td className="whitespace-nowrap px-6 py-4 font-medium">1</td>
-                                <td className="whitespace-nowrap px-6 py-4">Iphone</td>
-                                <td className="whitespace-nowrap px-6 py-4">Mark</td>
-                                <td className="whitespace-nowrap px-6 py-4">Otto</td>
-                                <td className="whitespace-nowrap px-6 py-4">@mdo</td>
-                            </tr>
-                            <tr
-                                className="border-b transition duration-300 ease-in-out ">
-                                <td className="whitespace-nowrap px-6 py-4 font-medium">1</td>
-                                <td className="whitespace-nowrap px-6 py-4">Iphone</td>
-                                <td className="whitespace-nowrap px-6 py-4">Mark</td>
-                                <td className="whitespace-nowrap px-6 py-4">Otto</td>
-                                <td className="whitespace-nowrap px-6 py-4">@mdo</td>
-                            </tr>
-                            <tr
-                                className="border-b transition duration-300 ease-in-out ">
-                                <td className="whitespace-nowrap px-6 py-4 font-medium">1</td>
-                                <td className="whitespace-nowrap px-6 py-4">Iphone</td>
-                                <td className="whitespace-nowrap px-6 py-4">Mark</td>
-                                <td className="whitespace-nowrap px-6 py-4">Otto</td>
-                                <td className="whitespace-nowrap px-6 py-4">@mdo</td>
-                            </tr>
+                            {
+                                myData.map((item, index) => {
+
+                                    return (
+
+                                        <tr key={index}
+                                            className="border-b transition duration-300 ease-in-out ">
+                                            <td className="whitespace-nowrap px-6 py-4 font-medium">{index + 1}</td>
+                                            <td className="whitespace-nowrap px-6 py-4">{item.pname}</td>
+                                            <td className="whitespace-nowrap px-6 py-4">{item.name}</td>
+                                            <td className="whitespace-nowrap px-6 py-4">{item.email}</td>
+                                            <td className="whitespace-nowrap px-6 py-4">{item.phone}</td>
+                                        </tr>
+
+                                    )
+
+                                })
+
+                            }
                         </tbody>
                     </table>
                 </div>

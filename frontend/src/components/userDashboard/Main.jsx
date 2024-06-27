@@ -5,12 +5,12 @@ import Topbar from './Topbar';
 const Main = () => {
     return (
         <div className="flex">
-            <div className="h-[100vh] w-[18%]">
+            <div className="h-[100vh] w-[18%] ">
                 <Sidebar />
             </div>
             <div className="w-[82%] flex flex-col bg-[#F1F5F9]">
                 <Topbar />
-                <div className="overflow-y-scroll">
+                <div className="">
                     <Outlet />
                 </div>
             </div>

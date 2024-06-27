@@ -55,3 +55,29 @@ export const getPost = (req, res) => {
     return res.status(200).json(result);
   });
 };
+
+export const getPostCountByUser = (req, res) => {
+  const user_id = req.params.id;
+  // const sql = `SELECT count(*) as count from product where uid = ${user_id}`;
+  const sql = `SELECT 
+  COUNT(CASE WHEN uid = ${user_id} THEN 1 END) AS uid_count,
+  COUNT(CASE WHEN buyer_id = ${user_id} THEN 1 END) AS buyer_id_count
+FROM 
+  product
+WHERE
+  uid = ${user_id} OR buyer_id = ${user_id};`;
+  db.query(sql, (err, result) => {
+    if (err) return res.json("Query garda error aayo" + err);
+
+    return res.status(200).json(result);
+  });
+};
+
+export const getPostByUser = (req, res) => {
+  const user_id = req.params.id;
+  const sql = `SELECT * from product where uid = ${user_id}`;
+  db.query(sql, (err, result) => {
+    if (err) return res.status(500).json("Query garda error aayo: " + err);
+    return res.status(200).json(result);
+  });
+};
