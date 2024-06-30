@@ -34,7 +34,7 @@ app.use(express.static("public"));
 // Define multer storage engine and options
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./public/images"); // Specify your destination folder
+    cb(null, "./public/images"); // Specifying destination folder
   },
   filename: function (req, file, cb) {
     cb(null, `${Date.now()}_${file.originalname}`);

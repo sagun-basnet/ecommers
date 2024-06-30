@@ -126,7 +126,7 @@ function App() {
   ]);
   return (
     <div className="App">
-      {/* <Loading /> */}
+      <Loading />
       <RouterProvider router={router} />
     </div>
   );

@@ -84,7 +84,7 @@ const Navbar = () => {
                     <RiDashboardFill />
                   </button>
                 </NavLink>
-                <button className=" w-[4.4rem] text-[1.2rem] flex justify-between py-[0.6em] bg-pink-500" onClick={() => setTogglePro(!togglePro)} >
+                <button className=" w-[4.4rem] text-[1.2rem] flex justify-between py-[0.6em] bg-primary" onClick={() => setTogglePro(!togglePro)} >
                   <FaUser /> <FaAngleDown />
                 </button>
                 {

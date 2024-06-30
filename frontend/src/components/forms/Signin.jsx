@@ -84,7 +84,7 @@ const Signin = () => {
                   name="email"
                   id="email"
                   placeholder="Email Address"
-                  className="font-semibold border-b-2 outline-none w-[80%] border-black border-botton px-8"
+                  className="font-semibold border-b-2  w-[80%]  px-8"
                   onChange={handleInput}
                   required
                 />
