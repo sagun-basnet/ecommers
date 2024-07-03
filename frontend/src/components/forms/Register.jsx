@@ -53,7 +53,7 @@ const Register = () => {
                     name="name"
                     id="name"
                     placeholder="Enter Full Name"
-                    className="font-semibold border-b-2 outline-none w-[80%] border-black border-botton px-8"
+                    className="font-semibold border-0 !border-b-2 w-[80%] border-black border-botton px-8"
                     onChange={handleChange}
                   />
                 </div>
@@ -64,7 +64,7 @@ const Register = () => {
                     name="address"
                     id="address"
                     placeholder="Enter Full Address"
-                    className="font-semibold border-b-2 outline-none w-[80%] border-black border-botton px-8"
+                    className="font-semibold border-0 !border-b-2 w-[80%] border-black border-botton px-8"
                     onChange={handleChange}
                   />
                 </div>
@@ -75,7 +75,7 @@ const Register = () => {
                     name="phone"
                     id="phone"
                     placeholder="Enter your phone "
-                    className="font-semibold border-b-2 outline-none w-[80%] border-black border-botton px-8"
+                    className="font-semibold border-0 !border-b-2 w-[80%] border-black border-botton px-8"
                     onChange={handleChange}
                   />
                 </div>
@@ -86,7 +86,7 @@ const Register = () => {
                     name="email"
                     id="email"
                     placeholder="Enter Email Address"
-                    className="font-semibold border-b-2 outline-none w-[80%] border-black border-botton px-8"
+                    className="font-semibold border-0 !border-b-2 w-[80%] border-black border-botton px-8"
                     onChange={handleChange}
                   />
                 </div>
@@ -96,12 +96,12 @@ const Register = () => {
                     type="password"
                     name="password"
                     placeholder="Enter your Password"
-                    className="font-semibold border-b-2 outline-none w-[80%] border-black border-botton px-8"
+                    className="font-semibold border-0 !border-b-2 w-[80%] border-black border-botton px-8"
                     onChange={handleChange}
                   />
                 </div>
               </div>
-              <div className="flex">
+              <div className="flex justify-center items-center">
                 <input
                   className="cursor-pointer"
                   type="checkbox"

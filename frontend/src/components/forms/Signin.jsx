@@ -84,7 +84,7 @@ const Signin = () => {
                   name="email"
                   id="email"
                   placeholder="Email Address"
-                  className="font-semibold border-b-2  w-[80%]  px-8"
+                  className="font-semibold border-0 !border-b-2  w-[80%]  px-8"
                   onChange={handleInput}
                   required
                 />
@@ -96,14 +96,14 @@ const Signin = () => {
                   type="password"
                   name="password"
                   placeholder="Password"
-                  className="font-semibold border-b-2 outline-none w-[80%] border-black border-botton px-8"
+                  className="font-semibold border-0 !border-b-2 w-[80%] border-black border-botton px-8"
                   onChange={handleInput}
                   autoComplete="on"
                   required
                 />
               </div>
               {errors.password !== "" && <span className="text-red-600">{errors.password}</span>}
-              <div className="flex">
+              <div className="flex justify-center items-center">
                 <input
                   className="cursor-pointer"
                   type="checkbox"
