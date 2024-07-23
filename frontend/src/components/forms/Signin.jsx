@@ -10,6 +10,7 @@ import Validation from "./SigninValidation";
 import axios from "axios";
 // import { AuthContext } from "../../context/AuthContext";
 import { AuthContext } from "../../context/authContext";
+import GoogleAuth from './GoogleAuth'
 
 const Signin = () => {
 
@@ -128,9 +129,10 @@ const Signin = () => {
                 <button className="p-1 rounded-md text-white bg-black">
                   <FaXTwitter />
                 </button>
-                <button className="p-1 rounded-md text-white bg-[#DB4437]">
+                <GoogleAuth />
+                {/* <button className="p-1 rounded-md text-white bg-[#DB4437]">
                   <IoLogoGoogle />
-                </button>
+                </button> */}
               </div>
             </form>
           </div>

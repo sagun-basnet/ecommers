@@ -9,9 +9,8 @@ import { AuthContext } from "../../context/authContext";
 const PostForm = () => {
     const { currentUser } = useContext(AuthContext);
     const navigation = useNavigate();
-    const [mainImg, setMainImg] = useState(null);
-    const [img2, setImg2] = useState(null);
-    const [img3, setImg3] = useState(null);
+    const [img, setImg] = useState(null);
+    const [fileCount, setFileCount] = useState(0);
 
     const initialValues = {
         pname: "",
@@ -24,6 +23,13 @@ const PostForm = () => {
     const { handleSubmit, handleChange, values } = useFormik({
         initialValues,
         onSubmit: async (values, action) => {
+            if (fileCount < 3 || fileCount > 5) {
+                setError('Please select between 3 to 5 files.');
+                setImg([]);
+                setFileCount(0);
+                e.target.reset();
+                return;
+            }
             try {
                 console.log(values);
                 const postData = {
@@ -33,24 +39,23 @@ const PostForm = () => {
                 console.log(postData.userId);
 
                 const formData = new FormData();
+                img.forEach((image, index) => {
+                    formData.append(`images`, image);
+                });
                 formData.append("pname", postData.pname);
                 formData.append("price", postData.price);
                 formData.append("description", postData.description);
                 formData.append("type", postData.type);
                 formData.append("userId", postData.userId);
-                if (mainImg) {
-                    formData.append("mainImg", mainImg);
-                }
-                if (img2) {
-                    formData.append("img2", img2);
-                }
-                if (img3) {
-                    formData.append("img3", img3);
-                }
-                //to console formData............
-                // for (var key of formData.entries()) {
-                //     console.log(key[0] + ', ' + key[1]);
-                // }
+
+                //log formData value
+                // formData.forEach((value, key) => {
+                //     if (key === 'images') {
+                //         console.log(`${key}: ${value.name}`); // Logging file name
+                //     } else {
+                //         console.log(`${key}: ${value}`);
+                //     }
+                // });
 
 
                 const response = await axios.post(
@@ -75,6 +80,9 @@ const PostForm = () => {
             } catch (error) {
                 console.error("Error During Posting: ", error);
             }
+            setImg([]);
+            setFileCount(0);
+            setError("")
             action.resetForm();
         },
     });
@@ -102,11 +110,16 @@ const PostForm = () => {
                             <option value="airpod" >airpod</option>
                             <option value="ipad" >ipad</option>
                         </select>
-                        <input type="file" name="mainImg" onChange={(e) => setMainImg(e.target.files[0])} className='flex cursor-pointer' />
-                    </div>
-                    <div className="flex gap-2">
-                        <input type="file" name="img2" onChange={(e) => setImg2(e.target.files[0])} className=' cursor-pointer' />
-                        <input type="file" name="img3" onChange={(e) => setImg3(e.target.files[0])} className=' cursor-pointer' />
+                        <input
+                            type="file"
+                            name="images"
+                            id="image"
+                            multiple
+                            onChange={(e) => {
+                                setImg([...e.target.files]);
+                                setFileCount(e.target.files.length);
+                            }}
+                        />
                     </div>
                     <div className="flex justify-end">
                         <button type='submit' className='bg-primary p-2 px-4 rounded-md'>Post</button>
