@@ -59,7 +59,7 @@ const PostForm = () => {
 
 
                 const response = await axios.post(
-                    "http://localhost:8800/api/post/createPost",
+                    "http://localhost:8800/api/createPost",
                     formData,
                     {
                         headers: {

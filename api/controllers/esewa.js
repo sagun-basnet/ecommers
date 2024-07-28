@@ -15,9 +15,9 @@ export const verifyEsewa = async (req, res) => {
   axios
     .get(`http://localhost:8800/api/getSeller/${proId}`)
     .then((response) => {
-      //   console.log(response.data);
+      // console.log(response.data);
       const productData = response.data;
-      console.log(productData[0].price);
+      // console.log(productData[0].price,"price");
       // console.log(uuid);
       const message = `total_amount=${productData[0].price},transaction_uuid=${uuid},product_code=EPAYTEST`;
       // console.log(message);

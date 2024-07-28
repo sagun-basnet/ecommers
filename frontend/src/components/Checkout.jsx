@@ -35,6 +35,7 @@ const Checkout = () => {
             const response = await axios.get(`http://localhost:8800/api/post/getPost/${pid}`);
             // console.log(response);
             setProducts(response.data);
+            console.log(products[0].price);
 
         } catch (err) {
             console.log("error aayo data fetch garda".err);
@@ -126,7 +127,7 @@ const Checkout = () => {
 
                     <div className="w-full h-0 border-2"></div>
                     <div className="khalti w-full my-grid">
-                        <button className='border-2 p-2 px-4 w-[60%] rounded-md bg-[#613494] text-white' onClick={handleBuy}>pay via khelti</button>
+                        <button className='border-2 p-2 px-4 w-[60%] rounded-md bg-[#613494] text-white' onClick={handleBuy}>Cash on delivery</button>
 
                     </div>
                 </div>

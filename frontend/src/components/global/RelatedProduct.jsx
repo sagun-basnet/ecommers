@@ -13,11 +13,19 @@ import { RiH1 } from 'react-icons/ri';
 const RelatedProduct = ({ pid }) => {
     // console.log(pid);
     const [products, setProducts] = useState([]);
+    const [imgArr, setImgArr] = useState([]);
     // console.log(products[0].pid);
 
     const loadData = async () => {
         const response = await axios.get("http://localhost:8800/api/post/getAllPost");
         setProducts(response.data);
+        function splitImagePaths(imageString) {
+            // Check if imageString is not null before splitting
+            return imageString ? imageString.split(',') : [];
+        }
+        products.map((data) => data.images);
+        setImgArr(splitImagePaths())
+        console.log(imgArr);
     }
 
     useEffect(() => {

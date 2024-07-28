@@ -12,7 +12,7 @@ import buyRoutes from "./routes/buy.js";
 import sellerRoutes from "./routes/seller.js";
 import esewaRoutes from "./routes/esewa.js";
 import orderRoutes from "./routes/order.js";
-import { createPost } from "./controllers/post.js";
+import createPost from "./routes/createPost.js";
 
 const app = express();
 
@@ -32,28 +32,29 @@ app.use(cookieParser());
 app.use(express.static("public"));
 
 // Define multer storage engine and options
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./public/images"); // Specifying destination folder
-  },
-  filename: function (req, file, cb) {
-    cb(null, `${Date.now()}_${file.originalname}`);
-  },
-});
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "./public/images"); // Specifying destination folder
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, `${Date.now()}_${file.originalname}`);
+//   },
+// });
 
-// Initialize multer with custom storage
-const upload = multer({ storage });
+// // Initialize multer with custom storage
+// const upload = multer({ storage });
 
-// Apply multer middleware to the createPost route
-app.post(
-  "/api/post/createPost",
-  upload.fields([{ name: "mainImg" }, { name: "img2" }, { name: "img3" }]),
-  createPost
-);
+// // Apply multer middleware to the createPost route
+// app.post(
+//   "/api/post/createPost",
+//   upload.fields([{ name: "mainImg" }, { name: "img2" }, { name: "img3" }]),
+//   createPost
+// );
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/post", postRoutes);
+app.use("/api", createPost);
 app.use("/api", buyRoutes);
 app.use("/api", sellerRoutes);
 app.use("/api", esewaRoutes);
