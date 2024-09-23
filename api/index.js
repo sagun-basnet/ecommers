@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import multer from "multer";
-import path from "path";
+import http from "http";
+import { Server } from "socket.io";
 
 // importing routes
 import userRoutes from "./routes/user.js";
@@ -13,6 +13,7 @@ import sellerRoutes from "./routes/seller.js";
 import esewaRoutes from "./routes/esewa.js";
 import orderRoutes from "./routes/order.js";
 import createPost from "./routes/createPost.js";
+import { log } from "console";
 
 const app = express();
 
@@ -27,29 +28,36 @@ app.use(
     origin: "http://localhost:5173",
   })
 );
+
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+  },
+});
+
+// Handle socket connections
+io.on("connection", (socket) => {
+  console.log("A user connected:", socket.id);
+
+  // Listen for sendMessage from client
+  socket.on("sendMessage", (data) => {
+    console.log("Message received: ", data);
+
+    // Emit the received message to all clients
+    io.emit("receiveMessage", data);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected:", socket.id);
+  });
+});
+
 app.use(cookieParser());
 // Serve static files from the 'public' directory
 app.use(express.static("public"));
-
-// Define multer storage engine and options
-// const storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, "./public/images"); // Specifying destination folder
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, `${Date.now()}_${file.originalname}`);
-//   },
-// });
-
-// // Initialize multer with custom storage
-// const upload = multer({ storage });
-
-// // Apply multer middleware to the createPost route
-// app.post(
-//   "/api/post/createPost",
-//   upload.fields([{ name: "mainImg" }, { name: "img2" }, { name: "img3" }]),
-//   createPost
-// );
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);

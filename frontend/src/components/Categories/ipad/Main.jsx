@@ -1,15 +1,14 @@
 import Product from "../../global/Product";
-import Image from "../../../images/phone.png";
-import Image1 from "../../../images/1080-iPhone_11_R_4.png";
-import Image2 from "../../../images/0063188_-apple-iphone-11-pro-max-_510.jpeg";
-import Bimage from "../../../images/blackIphone.png";
-import Bimage1 from "../../../images/blackIphone1.png";
-import Bimage2 from "../../../images/blackIphone2.png";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
 const Main = () => {
   const [products, setProducts] = useState([]);
+
+  function splitImagePaths(imageString) {
+    // Check if imageString is not null before splitting
+    return imageString ? imageString.split(',') : [];
+  }
 
   const loadData = async () => {
     const response = await axios.get("http://localhost:8800/api/post/getAllPost");
@@ -32,9 +31,7 @@ const Main = () => {
             <Product
               key={product.pid}
               pid={product.pid}
-              image={product.mainImg}
-              image1={product.img2}
-              image2={product.img3}
+              images={splitImagePaths(product.images)}
               name={product.pname}
               price={product.price}
             />

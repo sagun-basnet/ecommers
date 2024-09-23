@@ -9,6 +9,12 @@ const Sale = () => {
     const [activeSection, setActiveSection] = useState('soldOut');
     const [total, setTotal] = useState(0);
     const [myData1, setMyData1] = useState([]);
+    console.log(myData1);
+
+    function splitImagePaths(imageString) {
+        // Check if imageString is not null before splitting
+        return imageString ? imageString.split(',') : [];
+    }
 
     const loadMyData1 = async () => {
         try {
@@ -68,7 +74,7 @@ const Sale = () => {
                                     data-aos="fade-up"
                                 >
                                     <div className="productMainImg h-1/2 w-full mt-2">
-                                        <img className="h-full w-full" src={`http://localhost:8800${item.mainImg}`} alt="" />
+                                        <img className="h-full w-full" src={`http://localhost:8800${splitImagePaths(item.images)[0]}`} alt="" />
                                     </div>
                                     <div className="text-center mt-[-0.5rem]">
                                         <p className="text-[1.2rem] font-bold font-heading">Name: {item.pname}</p>
@@ -76,13 +82,13 @@ const Sale = () => {
                                     </div>
                                     <div className="productImgs h-[20%] flex gap-[0.6rem] ">
                                         <div className="img1 pimg">
-                                            <img src={`http://localhost:8800${item.img2}`} alt="" />
+                                            <img src={`http://localhost:8800${splitImagePaths(item.images)[0]}`} alt="" />
                                         </div>
                                         <div className="img2 pimg">
-                                            <img src={`http://localhost:8800${item.mainImg}`} alt="" />
+                                            <img src={`http://localhost:8800${splitImagePaths(item.images)[1]}`} alt="" />
                                         </div>
                                         <div className="img3 pimg">
-                                            <img src={`http://localhost:8800${item.img3}`} alt="" />
+                                            <img src={`http://localhost:8800${splitImagePaths(item.images)[2]}`} alt="" />
                                         </div>
                                     </div>
                                     <div className="flex justify-center gap-2 ">
@@ -112,9 +118,7 @@ const Sale = () => {
                                 <th scope="col" className="px-6 py-4">#</th>
                                 <th scope="col" className="px-6 py-4">Product Name</th>
                                 <th scope="col" className="px-6 py-4">Price</th>
-                                <th scope="col" className="px-6 py-4">Main Image</th>
-                                <th scope="col" className="px-6 py-4">Image 2</th>
-                                <th scope="col" className="px-6 py-4">Image 3</th>
+                                <th scope="col" className="px-6 py-4">Images</th>
                                 <th scope="col" className="px-6 py-4">Buyer's Name</th>
                             </tr>
                         </thead>
@@ -129,9 +133,13 @@ const Sale = () => {
                                                 <td className="whitespace-nowrap px-6 py-4 font-medium">{index + 1}</td>
                                                 <td className="whitespace-nowrap px-6 py-4">{item.pname}</td>
                                                 <td className="whitespace-nowrap px-6 py-4">{item.price}</td>
-                                                <td className="whitespace-nowrap px-6 py-4"><img className='w-32' src={`http://localhost:8800${item.mainImg}`} alt="" /></td>
-                                                <td className="whitespace-nowrap px-6 py-4"><img className='w-32' src={`http://localhost:8800${item.img2}`} alt="" /></td>
-                                                <td className="whitespace-nowrap px-6 py-4"><img className='w-32' src={`http://localhost:8800${item.img3}`} alt="" /></td>
+                                                <td className="whitespace-nowrap px-6 py-4 flex gap-[1rem]">
+                                                    <img className='w-32' src={`http://localhost:8800${splitImagePaths(item.images)[0]}`} alt="" />
+                                                    <img className='w-32' src={`http://localhost:8800${splitImagePaths(item.images)[1]}`} alt="" />
+                                                    <img className='w-32' src={`http://localhost:8800${splitImagePaths(item.images)[2]}`} alt="" />
+                                                </td>
+                                                <td className="whitespace-nowrap px-6 py-4"></td>
+                                                <td className="whitespace-nowrap px-6 py-4"></td>
                                                 <td className="whitespace-nowrap px-6 py-4">{item.name}</td>
                                             </tr>
 

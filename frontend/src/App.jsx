@@ -23,6 +23,7 @@ import Sale from "./components/userDashboard/Sale";
 import Purchase from "./components/userDashboard/Purchase";
 import Dashboard from "./components/userDashboard/Dashboard";
 import Main from "./components/userDashboard/Main";
+import Chat from "./components/Chat";
 
 function App() {
   const Layout = () => {
@@ -88,6 +89,10 @@ function App() {
     {
       path: "/finished/:pid",
       element: <ThankYou />
+    },
+    {
+      path: "/chat",
+      element: <Chat />
     },
     // {
     //   path: "/user/dashboard",

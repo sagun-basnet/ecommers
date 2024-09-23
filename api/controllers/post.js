@@ -102,7 +102,17 @@ WHERE
 
 export const getPostByUser = (req, res) => {
   const user_id = req.params.id;
-  const sql = `SELECT * from product where uid = ${user_id}`;
+  // const sql = `SELECT * from product where uid = ${user_id}`;
+  const sql = ` SELECT 
+        p.*, 
+        GROUP_CONCAT(i.image) AS images
+    FROM 
+        appletradezone.product p
+    LEFT JOIN 
+        appletradezone.image i ON p.pid = i.p_id  WHERE p.uid=${user_id}
+    GROUP BY 
+        p.pid, 
+        p.pname`;
   db.query(sql, (err, result) => {
     if (err) return res.status(500).json("Query garda error aayo: " + err);
     return res.status(200).json(result);

@@ -8,16 +8,20 @@ import axios from 'axios';
 
 const Checkout = () => {
     const { pid } = useParams();
+    console.log(parseInt(pid));
+
     const { currentUser } = useContext(AuthContext);
 
     const [products, setProducts] = useState([]);
     const [esewa, setEsewa] = useState({});
+
+    const [img, setImg] = useState('');
     // console.log(esewa?.signature);
     // console.log(esewa?.uuid);
 
     const loadEsewa = async () => {
         try {
-            const response = await axios.get(`http://localhost:8800/api/verifyEsewa/${pid}`);
+            const response = await axios.get(`http://localhost:8800/api/verifyEsewa/${parseInt(pid)}`);
             setEsewa(response.data);
             // console.log(response.data);
         } catch (err) {
@@ -28,19 +32,24 @@ const Checkout = () => {
     useEffect(() => {
         loadEsewa();
     }, []);
+    function splitImagePaths(imageString) {
+        // Check if imageString is not null before splitting
+        return imageString ? imageString.split(',') : [];
+    }
 
     const loadData = async () => {
         try {
 
-            const response = await axios.get(`http://localhost:8800/api/post/getPost/${pid}`);
+            const response = await axios.get(`http://localhost:8800/api/post/getPost/${parseInt(pid)}`);
             // console.log(response);
             setProducts(response.data);
-            console.log(products[0].price);
-
+            setImg(splitImagePaths(response.data[0].images)[0]);
         } catch (err) {
-            console.log("error aayo data fetch garda".err);
+            console.log("error aayo data fetch garda: ".err);
         }
     }
+    console.log(img);
+    console.log(products[0]);
 
     useEffect(() => {
         loadData();
@@ -72,7 +81,7 @@ const Checkout = () => {
                     </div>
                     <div className="product flex border-2 p-2">
                         <div className="img h-[5rem]">
-                            <img className='h-full w-full' src={`http://localhost:8800${products[0]?.mainImg}`} alt="" />
+                            <img className='h-full w-full' src={`http://localhost:8800${img}`} alt="" />
                         </div>
                         <div className="detail flex justify-between w-[80%] p-2">
                             <div className="flex flex-col">

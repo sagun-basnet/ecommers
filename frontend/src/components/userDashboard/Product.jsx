@@ -23,18 +23,26 @@ const Product = () => {
     const [myData1, setMyData1] = useState([]);
     const [open, setOpen] = useState(false);
     const [openBuyer, setOpenBuyer] = useState(false);
+    const [img, setImg] = useState([])
     // console.log(myBuyer);
     // console.log(myData);
+    function splitImagePaths(imageString) {
+        // Check if imageString is not null before splitting
+        return imageString ? imageString.split(',') : [];
+    }
 
     const loadMyData = async () => {
         try {
             const response = await axios.get(`http://localhost:8800/api/post/getPostByUser/${user_id}`);
             console.log(response);
             setMyData(response.data);
+            setImg(response.data.images);
         } catch (e) {
             console.log("Error aayo:", e);
         }
     }
+    console.log(myData);
+
 
     useEffect(() => {
         loadMyData();
@@ -101,7 +109,7 @@ const Product = () => {
                                 data-aos="fade-up"
                             >
                                 <div className="productMainImg h-1/2 w-full mt-2">
-                                    <img className="h-full w-full" src={`http://localhost:8800${item.mainImg}`} alt="" />
+                                    <img className="h-full w-full" src={`http://localhost:8800${splitImagePaths(item.images)[0]}`} alt="" />
                                 </div>
                                 <div className="text-center mt-[-0.5rem]">
                                     <p className="text-[1.2rem] font-bold font-heading">Name: {item.pname}</p>
@@ -109,13 +117,13 @@ const Product = () => {
                                 </div>
                                 <div className="productImgs h-[20%] flex gap-[0.6rem] ">
                                     <div className="img1 pimg">
-                                        <img src={`http://localhost:8800${item.img2}`} alt="" />
+                                        <img src={`http://localhost:8800${splitImagePaths(item.images)[0]}`} alt="" />
                                     </div>
                                     <div className="img2 pimg">
-                                        <img src={`http://localhost:8800${item.mainImg}`} alt="" />
+                                        <img src={`http://localhost:8800${splitImagePaths(item.images)[1]}`} alt="" />
                                     </div>
                                     <div className="img3 pimg">
-                                        <img src={`http://localhost:8800${item.img3}`} alt="" />
+                                        <img src={`http://localhost:8800${splitImagePaths(item.images)[2]}`} alt="" />
                                     </div>
                                 </div>
                                 <div className="flex justify-center gap-2 ">
@@ -146,7 +154,7 @@ const Product = () => {
                                 data-aos="fade-up"
                             >
                                 <div className="productMainImg h-1/2 w-full mt-2">
-                                    <img className="h-full w-full" src={`http://localhost:8800${item.mainImg}`} alt="" />
+                                    <img className="h-full w-full" src={`http://localhost:8800${splitImagePaths(item.images)[0]}`} alt="" />
                                 </div>
                                 <div className="text-center mt-[-0.5rem]">
                                     <p className="text-[1.2rem] font-bold font-heading">Name: {item.pname}</p>
@@ -154,13 +162,13 @@ const Product = () => {
                                 </div>
                                 <div className="productImgs h-[20%] flex gap-[0.6rem] ">
                                     <div className="img1 pimg">
-                                        <img src={`http://localhost:8800${item.img2}`} alt="" />
+                                        <img src={`http://localhost:8800${splitImagePaths(item.images)[0]}`} alt="" />
                                     </div>
                                     <div className="img2 pimg">
-                                        <img src={`http://localhost:8800${item.mainImg}`} alt="" />
+                                        <img src={`http://localhost:8800${splitImagePaths(item.images)[1]}`} alt="" />
                                     </div>
                                     <div className="img3 pimg">
-                                        <img src={`http://localhost:8800${item.img3}`} alt="" />
+                                        <img src={`http://localhost:8800${splitImagePaths(item.images)[2]}`} alt="" />
                                     </div>
                                 </div>
                                 <div className="flex justify-center gap-2 ">
@@ -202,8 +210,8 @@ const Product = () => {
                     <FaRegUserCircle className='text-8xl text-gray-700' />
                 </div>
                 <div className="flex flex-col gap-1">
-                    <div className="flex gap-2 justify-between w-[10rem] text-xl">
-                        <span className='font-bold'>Name: </span> <span className='text-primary font-bold flex justify-start w-1/2'>{myBuyer[0]?.name}</span>
+                    <div className="flex gap-2 justify-between w-[12rem] text-xl ">
+                        <span className='font-bold'>Name: </span> <span className='text-primary font-bold flex justify-start w-full'>{myBuyer[0]?.name}</span>
                     </div>
                     <div className="flex gap-2 justify-between w-[10rem] text-xl">
                         <span className='font-bold'>Address: </span> <span className='text-primary font-bold flex justify-start w-1/2'>{myBuyer[0]?.address}</span>

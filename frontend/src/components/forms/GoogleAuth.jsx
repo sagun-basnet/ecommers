@@ -10,12 +10,12 @@ const GoogleAuth = () => {
       const auth = getAuth(app)
       const result = await signInWithPopup(auth, provider)
       console.log(result)
-      console.log(result.user.displayName,result.user.email)
+      console.log(result.user.displayName, result.user.email)
       //ya bata pathaune ho database ma user ko info
     } catch (error) {
       console.log("Couldnot connect to Google", error)
     }
-    
+
   }
   return (
     <div>

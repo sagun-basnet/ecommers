@@ -88,9 +88,9 @@ const Navbar = () => {
                   <FaUser /> <FaAngleDown />
                 </button>
                 {
-                  togglePro && (<div className="absolute flex flex-col rigth-0 top-16 bg-black">
-                    <h3>{currentUser?.name}</h3>
-                    <button onClick={handleLogout}>Logout</button>
+                  togglePro && (<div className="absolute flex flex-col rigth-[-2] top-16 bg-black rounded-md p-4 z-10">
+                    <h3 className="text-white">{currentUser?.name}</h3>
+                    <button onClick={handleLogout} className="text-red-500">Logout</button>
                   </div>)
                 }
 
