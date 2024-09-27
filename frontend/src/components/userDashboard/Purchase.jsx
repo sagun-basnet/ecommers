@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../context/authContext';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Purchase = () => {
+    const navigate = useNavigate();
     const { currentUser } = useContext(AuthContext);
     const user_id = currentUser?.uid;
     const [activeSection, setActiveSection] = useState('soldOut');
@@ -68,7 +69,7 @@ const Purchase = () => {
                 {
                     myData1.map((item) => {
                         return (
-                            item.status !== "pending" ?
+                            item.status === "pending" ?
                                 <div
                                     className="productMainDiv rounded-[0.6rem] h-[26rem] w-full px-[3%] my-border  flex flex-col gap-[0.6rem] bg-[#F1F5F9]"
                                     data-aos="fade-up"
@@ -95,7 +96,7 @@ const Purchase = () => {
                                         <div className="grid place-items-center p-2 bg-primary rounded-md">
                                             {item.status}
                                         </div>
-                                        <button className='px-4 py-1 rounded-md bg-blue-500 hover:bg-blue-600 my-transition'>View</button>
+                                        <button onClick={() => navigate(`/product/${item.pid}`)} className='px-4 py-1 rounded-md bg-blue-500 hover:bg-blue-600 my-transition'>View</button>
                                         {/* <button className='px-4 py-1 rounded-md bg-red-500 hover:bg-red-600 my-transition'>Delete</button> */}
                                     </div>
                                 </div> : <>

@@ -7,11 +7,12 @@ import { FaRegTrashAlt } from "react-icons/fa";
 
 // import { useEffect } from "react";
 import { AuthContext } from '../../context/authContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Modal from '../global/Modal';
 import { FaRegUserCircle } from "react-icons/fa";
 
 const Product = () => {
+    const navigate = useNavigate();
     useEffect(() => {
         AOS.init({ duration: 1500 });
     }, []);
@@ -127,7 +128,7 @@ const Product = () => {
                                     </div>
                                 </div>
                                 <div className="flex justify-center gap-2 ">
-                                    <button className='px-4 py-1 rounded-md bg-blue-500 hover:bg-blue-600 my-transition'>View</button>
+                                    <button onClick={() => navigate(`/product/${item.pid}`)} className='px-4 py-1 rounded-md bg-blue-500 hover:bg-blue-600 my-transition'>View</button>
 
 
 
@@ -145,6 +146,7 @@ const Product = () => {
 
 
             {/* for buyers request */}
+
             <div className={`bg-white grid grid-cols-3 gap-2 p-4 overflow-y-scroll no-scrollbar ${activeSection === 'buyerRequest' ? 'grid' : 'hidden'}`}>
                 {
                     myData1.map((item) => {

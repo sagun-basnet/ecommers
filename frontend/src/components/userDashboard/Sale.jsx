@@ -1,15 +1,16 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../context/authContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Sale = () => {
+    const navigate = useNavigate();
     const { currentUser } = useContext(AuthContext);
     const user_id = currentUser?.uid;
     const [activeSection, setActiveSection] = useState('soldOut');
     const [total, setTotal] = useState(0);
     const [myData1, setMyData1] = useState([]);
-    console.log(myData1);
+    // console.log(myData1.length !== 0);
 
     function splitImagePaths(imageString) {
         // Check if imageString is not null before splitting
@@ -19,7 +20,7 @@ const Sale = () => {
     const loadMyData1 = async () => {
         try {
             const response = await axios.get(`http://localhost:8800/api/getOrderByUser/${user_id}`);
-            // console.log(response);
+            console.log(response.data);
             setMyData1(response.data);
 
             // Calculate total price
@@ -34,6 +35,7 @@ const Sale = () => {
                 }
             }, 0);
             setTotal(totalPrice);
+
 
         } catch (e) {
             console.log("Error aayo:", e);
@@ -66,43 +68,45 @@ const Sale = () => {
             {/* for solded Product  */}
             <div className={`bg-white grid grid-cols-3 gap-2 p-4 overflow-y-scroll no-scrollbar ${activeSection === 'soldOut' ? 'grid' : 'hidden'}`}>
                 {
-                    myData1.map((item) => {
-                        return (
-                            item.status !== "pending" ?
-                                <div
-                                    className="productMainDiv rounded-[0.6rem] h-[26rem] w-full px-[3%] my-border  flex flex-col gap-[0.6rem] bg-[#F1F5F9]"
-                                    data-aos="fade-up"
-                                >
-                                    <div className="productMainImg h-1/2 w-full mt-2">
-                                        <img className="h-full w-full" src={`http://localhost:8800${splitImagePaths(item.images)[0]}`} alt="" />
+                    myData1.length === 0 ? (
+                        <h1 className="h-32 text-center col-span-4 text-primary">No products found</h1>
+                    ) : (
+                        myData1.map((item) => (
+                            // {
+                            //     item.
+                            // }
+                            <div
+                                key={item.id} // add key for React rendering
+                                className="productMainDiv rounded-[0.6rem] h-[26rem] w-full px-[3%] my-border  flex flex-col gap-[0.6rem] bg-[#F1F5F9]"
+                                data-aos="fade-up"
+                            >
+                                <div className="productMainImg h-1/2 w-full mt-2">
+                                    <img className="h-full w-full" src={`http://localhost:8800${splitImagePaths(item.images)[0]}`} alt="" />
+                                </div>
+                                <div className="text-center mt-[-0.5rem]">
+                                    <p className="text-[1.2rem] font-bold font-heading">Name: {item.pname}</p>
+                                    <p className="text-primary font-bold font-heading">Rs: {item.price}</p>
+                                </div>
+                                <div className="productImgs h-[20%] flex gap-[0.6rem] ">
+                                    <div className="img1 pimg">
+                                        <img src={`http://localhost:8800${splitImagePaths(item.images)[0]}`} alt="" />
                                     </div>
-                                    <div className="text-center mt-[-0.5rem]">
-                                        <p className="text-[1.2rem] font-bold font-heading">Name: {item.pname}</p>
-                                        <p className="text-primary font-bold font-heading">Rs: {item.price}</p>
+                                    <div className="img2 pimg">
+                                        <img src={`http://localhost:8800${splitImagePaths(item.images)[1]}`} alt="" />
                                     </div>
-                                    <div className="productImgs h-[20%] flex gap-[0.6rem] ">
-                                        <div className="img1 pimg">
-                                            <img src={`http://localhost:8800${splitImagePaths(item.images)[0]}`} alt="" />
-                                        </div>
-                                        <div className="img2 pimg">
-                                            <img src={`http://localhost:8800${splitImagePaths(item.images)[1]}`} alt="" />
-                                        </div>
-                                        <div className="img3 pimg">
-                                            <img src={`http://localhost:8800${splitImagePaths(item.images)[2]}`} alt="" />
-                                        </div>
+                                    <div className="img3 pimg">
+                                        <img src={`http://localhost:8800${splitImagePaths(item.images)[2]}`} alt="" />
                                     </div>
-                                    <div className="flex justify-center gap-2 ">
-                                        <div className="grid place-items-center p-2 bg-primary rounded-md">
-                                            {item.status}
-                                        </div>
-                                        <button className='px-4 py-1 rounded-md bg-blue-500 hover:bg-blue-600 my-transition'>View</button>
-                                        {/* <button className='px-4 py-1 rounded-md bg-red-500 hover:bg-red-600 my-transition'>Delete</button> */}
+                                </div>
+                                <div className="flex justify-center gap-2 ">
+                                    <div className="grid place-items-center p-2 bg-primary rounded-md">
+                                        {item.status}
                                     </div>
-                                </div> : <>
-                                    <h1 className="h-32 text-center col-span-4 text-primary">No products found</h1>
-                                </>
-                        )
-                    })
+                                    <button onClick={() => navigate(`/product/${item.pid}`)} className='px-4 py-1 rounded-md bg-blue-500 hover:bg-blue-600 my-transition'>View</button>
+                                </div>
+                            </div>
+                        ))
+                    )
                 }
             </div>
 

@@ -15,9 +15,9 @@ const Sidebar = () => {
     return (
         <aside className='h-full w-full bg-[#1C2434] sticky top-0 z-999'>
             <div className="grid place-items-center">
-                <h1 style={{ "font-family": "Rubik Maps" }} className="cursor-pointer mt-[0.8rem] text-[#c8c8c8]">
-                    <span style={{ "font-family": "Rubik Maps" }} className="text-primary">A</span>
-                    <span style={{ "font-family": "Rubik Maps" }} className="text-black">T</span>Z
+                <h1 style={{ "fontFamily": "Rubik Maps" }} className="cursor-pointer mt-[0.8rem] text-[#c8c8c8]">
+                    <span style={{ "fontFamily": "Rubik Maps" }} className="text-primary">A</span>
+                    <span style={{ "fontFamily": "Rubik Maps" }} className="text-black">T</span>Z
                 </h1>
             </div>
             <div className="mt-12">

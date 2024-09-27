@@ -1,14 +1,16 @@
 import { db } from "../db.js";
+
 export const createPost = (req, res) => {
   const { pname, price, description, type, userId } = req.body;
+  const images = req.files; // Array of images
 
-  const images = req.files;
+  console.log(images, "Image Path");
 
-  console.log(images);
-
+  // Values for product table insertion
   const values = [pname, price, description, type, userId];
-  const sql = `INSERT INTO product(pname, price, description, type ,uid) VALUES(?,?,?,?,?)`;
+  const sql = `INSERT INTO product(pname, price, description, type, uid) VALUES(?,?,?,?,?)`;
 
+  // Insert product into the product table
   db.query(sql, values, (err, results) => {
     if (err) {
       console.error("Error aayo:", err);
@@ -17,29 +19,41 @@ export const createPost = (req, res) => {
         .json({ error: "An error occurred", details: err.message });
     } else {
       const pid = results.insertId; // Get the ID of the inserted product
-      console.log("Package has been added, Product ID:", pid);
+      console.log("Product has been added, Product ID:", pid);
 
-      // Insert images into the second table
-      const imageValues = images.map((image) => [pid, image.path]); // Assuming image.path is the path of the image
-      const imageSql = `INSERT INTO product_images(pid, image_path) VALUES ?`;
+      // Insert 3 images into the product_images table
+      if (images && images.length >= 3) {
+        const imageValues = images
+          .slice(0, 3)
+          .map((image) => [pid, `/images/${image.filename}`]);
 
-      // db.query(imageSql, [imageValues], (imageErr, imageResults) => {
-      //   if (imageErr) {
-      //     console.error("Error inserting images:", imageErr);
-      //     res
-      //       .status(500)
-      //       .json({ error: "An error occurred while inserting images", details: imageErr.message });
-      //   } else {
-      //     console.log("Images have been added");
-      //     res.status(200).json({ message: "Product and images have been added" });
-      //   }
-      // });
-      console.log(pid, "pid");
+        // Insert each image as a separate row
+        const imageSql = `INSERT INTO image(p_id, image) VALUES ?`;
+
+        db.query(imageSql, [imageValues], (imageErr, imageResults) => {
+          if (imageErr) {
+            console.error("Error inserting images:", imageErr);
+            res.status(500).json({
+              error: "An error occurred while inserting images",
+              details: imageErr.message,
+            });
+          } else {
+            console.log("Images have been added");
+            res.status(200).json({
+              message: "Product and images have been added successfully",
+              imageResults,
+            });
+          }
+        });
+      } else {
+        res.status(400).json({
+          error: "Please upload at least 3 images.",
+        });
+      }
     }
   });
-
-  // const pid = myRes.rows[0].pid;
 };
+
 // export default { createPost };
 
 //Get all posts from database
