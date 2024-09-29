@@ -93,7 +93,7 @@ const Purchase = () => {
                             return (
                                 <div
                                     className="productMainDiv rounded-[0.6rem] h-[26rem] w-full px-[3%] my-border  flex flex-col gap-[0.6rem] bg-[#F1F5F9]"
-                                    data-aos="fade-up"
+                                // data-aos="fade-up"
                                 >
                                     <div className="productMainImg h-1/2 w-full mt-2">
                                         <img className="h-full w-full" src={`http://localhost:8800${splitImagePaths(item.images)[0]}`} alt="" />

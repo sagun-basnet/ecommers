@@ -64,22 +64,27 @@ const Checkout = () => {
     }
 
     function formatNumberCustom(number) {
+        if (!number) {
+            return ''; // Return empty string if number is undefined or null
+        }
+
         // Convert the number to a string and reverse it for easier manipulation
         let numStr = number.toString().split('').reverse().join('');
-        
+
         // Group the reversed string into the first 3 digits and the rest in pairs of 2
         let firstPart = numStr.slice(0, 3);  // First 3 digits
         let restPart = numStr.slice(3);      // Rest of the digits
-        
+
         // Group the rest digits in pairs of 2
         let groupedRest = restPart.match(/.{1,2}/g) || [];
-        
+
         // Combine the first part and grouped rest with commas
         let formattedNumber = firstPart + (groupedRest.length ? ',' + groupedRest.join(',') : '');
-        
+
         // Reverse the string back to its correct form and return it
         return formattedNumber.split('').reverse().join('');
     }
+
     // const products[0]? = products.find((product) => product.pid === parseInt(pid));
     return (
         <div className='w-full h-[100vh] my-flex font-heading'>
@@ -94,7 +99,7 @@ const Checkout = () => {
                         <span className='capitalize font-semibold'>{currentUser.name}</span>
                     </div>
                     <div className="">
-                        <h2>Rs. {products[0]?.price}</h2>
+                        <h2>Rs. {formatNumberCustom(products[0]?.price)}</h2>
                     </div>
                     <div className="product flex border-2 p-2">
                         <div className="img h-[5rem]">
@@ -105,13 +110,13 @@ const Checkout = () => {
                                 <span className='font-bold text-lg'>{products[0]?.pname}</span>
                                 <span>Qty 1</span>
                             </div>
-                            <span className='font-bold text-lg'>Rs. {products[0]?.price}</span>
+                            <span className='font-bold text-lg'>Rs. {formatNumberCustom(products[0]?.price)}</span>
                         </div>
                     </div>
                     <div className=" flex items-end flex-col">
                         <span className=' w-[70%] flex justify-between'>
                             <span>Subtotal</span>
-                            <span>Rs. {products[0]?.price}</span>
+                            <span>Rs. {formatNumberCustom(products[0]?.price)}</span>
                         </span>
                     </div>
                     <div className=" flex items-end flex-col">
@@ -123,7 +128,7 @@ const Checkout = () => {
                     <div className=" flex items-end flex-col">
                         <span className=' w-[70%] flex justify-between'>
                             <span>Total Due</span>
-                            <span>Rs. {products[0]?.price}</span>
+                            <span>Rs. {formatNumberCustom(products[0]?.price)}</span>
                         </span>
                     </div>
                 </div>
@@ -146,7 +151,7 @@ const Checkout = () => {
                             value="total_amount,transaction_uuid,product_code" required />
                         <input hidden type="text" id="signature" name="signature" value={esewa?.signature} required />
                         <div className="esewa w-full my-grid">
-                            <button className=' p-2 px-4 w-[60%] rounded-md bg-[#67BD4C]' /*onClick={handleBuy}*/ type='submit'>pay via esewa</button>
+                            <button className=' p-2 px-4 w-[60%] rounded-md bg-[#67BD4C]' type='submit'>pay via esewa</button>
                         </div>
                     </form>
 
