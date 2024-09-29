@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import http from "http";
 import { Server } from "socket.io";
+import { createServer } from "http";
 
 // importing routes
 import userRoutes from "./routes/user.js";
@@ -13,7 +13,6 @@ import sellerRoutes from "./routes/seller.js";
 import esewaRoutes from "./routes/esewa.js";
 import orderRoutes from "./routes/order.js";
 import createPost from "./routes/createPost.js";
-import { log } from "console";
 
 const app = express();
 
@@ -29,29 +28,29 @@ app.use(
   })
 );
 
-const server = http.createServer(app);
-
+const server = createServer(app);
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:5173",
     methods: ["GET", "POST"],
+    credentials: true,
   },
 });
 
-// Handle socket connections
 io.on("connection", (socket) => {
-  console.log("A user connected:", socket.id);
+  console.log("User connected");
+  // console.log("Id", socket.id);
 
-  // Listen for sendMessage from client
   socket.on("sendMessage", (data) => {
-    console.log("Message received: ", data);
-
-    // Emit the received message to all clients
-    io.emit("receiveMessage", data);
+    console.log(data, " sendMessage");
+    io.emit("sendMessage", data);
+  });
+  socket.on("message", (data) => {
+    console.log(data);
   });
 
   socket.on("disconnect", () => {
-    console.log("User disconnected:", socket.id);
+    console.log("User Disconnected", socket.id);
   });
 });
 
@@ -68,6 +67,6 @@ app.use("/api", sellerRoutes);
 app.use("/api", esewaRoutes);
 app.use("/api", orderRoutes);
 
-app.listen(8800, () => {
+server.listen(8800, () => {
   console.log("Connect vayo");
 });

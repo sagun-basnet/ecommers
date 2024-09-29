@@ -6,11 +6,18 @@ const Chat = ({ currentUser }) => {
     const [messageList, setMessageList] = useState([]);
 
     // Ensure socket connection is initialized and cleaned up correctly
+    const socket = io('http://localhost:8800'); // Use your actual backend URL
     useEffect(() => {
-        const socket = io('http://localhost:8800'); // Use your actual backend URL
+
+        socket.on("connect", () => {
+            console.log("Connected", socket.id);
+
+        })
 
         // Listening for incoming messages
-        socket.on('receiveMessage', (data) => {
+        socket.on('message', (data) => {
+            console.log(data);
+
             setMessageList((prev) => [...prev, data]);
         });
 
@@ -22,22 +29,24 @@ const Chat = ({ currentUser }) => {
 
     const sendMessage = () => {
         if (message !== '') {
-            const messageData = {
-                sender: currentUser.name,
-                message,
-                time: new Date(Date.now()).toLocaleTimeString(),
-            };
+            // const messageData = {
+            //     sender: currentUser.name,
+            //     message,
+            //     time: new Date(Date.now()).toLocaleTimeString(),
+            // };
 
             // Emit message to the server
-            socket.emit('sendMessage', messageData);
+            socket.emit('sendMessage', message);
 
             // Update message list
-            setMessageList((prev) => [...prev, messageData]);
+            setMessageList((prev) => [...prev, message]);
 
             // Clear the input field
-            setMessage('');
+            // setMessage('');
         }
     };
+    console.log(message);
+
 
     return (
         <div className='flex flex-col h-screen justify-between mx-auto max-w-lg'>
@@ -46,14 +55,12 @@ const Chat = ({ currentUser }) => {
                     {messageList.map((msg, index) => (
                         <div
                             key={index}
-                            className={`p-3 rounded-lg ${msg.sender === currentUser.name
-                                    ? 'bg-blue-500 text-white self-end'
-                                    : 'bg-gray-300 text-black self-start'
-                                }`}
+                            className={`p-3 rounded-lg bg-blue-500 text-white self-end'
+                                `}
                         >
-                            <p className='font-semibold'>{msg.sender}</p>
+                            {/* <p className='font-semibold'>{msg.sender}</p>
                             <p>{msg.message}</p>
-                            <span className='text-xs text-gray-200'>{msg.time}</span>
+                            <span className='text-xs text-gray-200'>{msg.time}</span> */}
                         </div>
                     ))}
                 </div>

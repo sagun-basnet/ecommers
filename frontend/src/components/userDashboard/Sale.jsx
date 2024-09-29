@@ -26,7 +26,7 @@ const Sale = () => {
             // Calculate total price
             const totalPrice = response.data.reduce((acc, item) => {
                 // Check if the item status is not "pending"
-                if (item.status !== "pending") {
+                if (item.status === "pending") {
                     // If not pending, add its price to the accumulator
                     return acc + parseInt(item.price);
                 } else {
@@ -50,6 +50,24 @@ const Sale = () => {
     const handleClick = (section) => {
         setActiveSection(section);
     }
+
+    function formatNumberCustom(number) {
+        // Convert the number to a string and reverse it for easier manipulation
+        let numStr = number.toString().split('').reverse().join('');
+        
+        // Group the reversed string into the first 3 digits and the rest in pairs of 2
+        let firstPart = numStr.slice(0, 3);  // First 3 digits
+        let restPart = numStr.slice(3);      // Rest of the digits
+        
+        // Group the rest digits in pairs of 2
+        let groupedRest = restPart.match(/.{1,2}/g) || [];
+        
+        // Combine the first part and grouped rest with commas
+        let formattedNumber = firstPart + (groupedRest.length ? ',' + groupedRest.join(',') : '');
+        
+        // Reverse the string back to its correct form and return it
+        return formattedNumber.split('').reverse().join('');
+    }
     return (
         <div className="flex flex-col p-8 pb-0">
             <div className="flex justify-between ">
@@ -66,7 +84,7 @@ const Sale = () => {
 
 
             {/* for solded Product  */}
-            <div className={`bg-white grid grid-cols-3 gap-2 p-4 overflow-y-scroll no-scrollbar ${activeSection === 'soldOut' ? 'grid' : 'hidden'}`}>
+            <div className={`bg-white grid grid-cols-3 gap-2 p-4 overflow-y-scroll h-[30rem] no-scrollbar ${activeSection === 'soldOut' ? 'grid' : 'hidden'}`}>
                 {
                     myData1.length === 0 ? (
                         <h1 className="h-32 text-center col-span-4 text-primary">No products found</h1>
@@ -85,7 +103,7 @@ const Sale = () => {
                                 </div>
                                 <div className="text-center mt-[-0.5rem]">
                                     <p className="text-[1.2rem] font-bold font-heading">Name: {item.pname}</p>
-                                    <p className="text-primary font-bold font-heading">Rs: {item.price}</p>
+                                    <p className="text-primary font-bold font-heading">Rs: {formatNumberCustom(item.price)}</p>
                                 </div>
                                 <div className="productImgs h-[20%] flex gap-[0.6rem] ">
                                     <div className="img1 pimg">
@@ -118,12 +136,13 @@ const Sale = () => {
                 >
                     <table className=" min-w-full text-left text-sm font-light">
                         <thead className="border-b font-medium dark:border-neutral-500">
-                            <tr>
+                            <tr className='border-2 '>
                                 <th scope="col" className="px-6 py-4">#</th>
                                 <th scope="col" className="px-6 py-4">Product Name</th>
                                 <th scope="col" className="px-6 py-4">Price</th>
-                                <th scope="col" className="px-6 py-4">Images</th>
+                                <th scope="col" className="px-6 py-4 grid place-items-center">Images</th>
                                 <th scope="col" className="px-6 py-4">Buyer's Name</th>
+                                <th scope="col" className="px-6 py-4">Buyer's Phone</th>
                             </tr>
                         </thead>
                         <tbody className=' overflow-y-scroll'>
@@ -131,20 +150,19 @@ const Sale = () => {
                                 myData1.map((item, index) => {
 
                                     return (
-                                        item.status !== "pending" ?
+                                        item.status === "pending" ?
                                             <tr
                                                 className="border-b transition duration-300 ease-in-out">
                                                 <td className="whitespace-nowrap px-6 py-4 font-medium">{index + 1}</td>
                                                 <td className="whitespace-nowrap px-6 py-4">{item.pname}</td>
-                                                <td className="whitespace-nowrap px-6 py-4">{item.price}</td>
-                                                <td className="whitespace-nowrap px-6 py-4 flex gap-[1rem]">
-                                                    <img className='w-32' src={`http://localhost:8800${splitImagePaths(item.images)[0]}`} alt="" />
-                                                    <img className='w-32' src={`http://localhost:8800${splitImagePaths(item.images)[1]}`} alt="" />
-                                                    <img className='w-32' src={`http://localhost:8800${splitImagePaths(item.images)[2]}`} alt="" />
+                                                <td className="whitespace-nowrap px-6 py-4">{formatNumberCustom(item.price)}</td>
+                                                <td className="whitespace-nowrap px-6 py-4 flex gap-[1rem] justify-center">
+                                                    <img className='w-16 border-2 border-black rounded-md' src={`http://localhost:8800${splitImagePaths(item.images)[0]}`} alt="" />
+                                                    <img className='w-16 border-2 border-black rounded-md' src={`http://localhost:8800${splitImagePaths(item.images)[1]}`} alt="" />
+                                                    <img className='w-16 border-2 border-black rounded-md' src={`http://localhost:8800${splitImagePaths(item.images)[2]}`} alt="" />
                                                 </td>
-                                                <td className="whitespace-nowrap px-6 py-4"></td>
-                                                <td className="whitespace-nowrap px-6 py-4"></td>
                                                 <td className="whitespace-nowrap px-6 py-4">{item.name}</td>
+                                                <td className="whitespace-nowrap px-6 py-4">{item.phone}</td>
                                             </tr>
 
 

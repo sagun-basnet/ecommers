@@ -1,28 +1,30 @@
+import { useContext, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { IoMdHome } from "react-icons/io";
+import { FaPlus, FaSignInAlt, FaUser, FaAngleDown } from "react-icons/fa";
+import { RiDashboardFill } from "react-icons/ri";
 import Iphone from "../../images/iPhone.png";
 import Macbook from "../../images/macbook.png";
 import Watch from "../../images/watch.png";
 import Airpod from "../../images/airpod.png";
 import Ipad from "../../images/ipad.png";
-// import Logo from "../../images/logoPng1.png";
-import "./global.css";
-import { NavLink, useNavigate } from "react-router-dom";
-import { IoMdHome } from "react-icons/io";
-import { FaPlus } from "react-icons/fa";
-import { FaSignInAlt } from "react-icons/fa";
-import { RiDashboardFill } from "react-icons/ri";
-import { FaUser } from "react-icons/fa6";
-import { FaAngleDown } from "react-icons/fa";
 import Categories from "./Categories";
-import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/authContext";
+import Search from "../Search";
+import "./global.css";
 import axios from "axios";
-import PostForm from "../forms/PostForm";
 
 const Navbar = () => {
   const { currentUser, logout } = useContext(AuthContext);
   const navigation = useNavigate();
 
+  const [data, setData] = useState([]);
+  const [searchData, setSearchData] = useState([]);
+  // console.log(data);
+
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [openSearch, setOpenSearch] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
   const [togglePro, setTogglePro] = useState(false);
 
   const handleCategoryClick = (category) => {
@@ -32,7 +34,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     await logout();
     setTogglePro(!togglePro);
-  }
+  };
 
   const handlePost = () => {
     if (!currentUser) {
@@ -40,11 +42,36 @@ const Navbar = () => {
     } else {
       navigation('/post');
     }
+  };
+
+  const getProduct = async () => {
+    await axios.get('http://localhost:8800/api/post/getAllPost').then((res) => {
+      console.log(res.data);
+      setData(res.data);
+      setSearchData(data.filter(product => product.pname.toLowerCase().includes(searchValue)));
+
+    }).catch((err) => {
+      console.log("Error while fetching data... ", err);
+    })
   }
 
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    setSearchValue(value);
+
+    // Toggle openSearch based on whether the input is empty or not
+    if (value.trim() === "") {
+      setOpenSearch(false);
+    } else {
+      setOpenSearch(true);
+      getProduct();
+      // console.log(searchValue);
+
+    }
+  };
 
   return (
-    <nav className="mainNav h-[14rem] flex flex-col mx-4">
+    <nav className="relative mainNav h-[14rem] flex flex-col mx-4">
       <div className="navTop h-2/5 w-full flex items-center">
         <div className="logo mr-[2.8rem] ml-[0.4rem] mt-[-0.8rem] w-[7.8rem]">
           <h1 className="cursor-pointer mt-[0.8rem] text-[#c8c8c8]">
@@ -53,7 +80,7 @@ const Navbar = () => {
           </h1>
         </div>
         <div className="notLogo h-full w-full flex items-center">
-          <div className="homeBtn ">
+          <div className="homeBtn">
             <NavLink to="/">
               <button
                 onClick={() => setSelectedCategory(null)}
@@ -68,32 +95,41 @@ const Navbar = () => {
               type="search"
               name="search"
               id="search"
+              onChange={handleSearch}
+              value={searchValue}
               placeholder="Search Your Desire Product ...."
               className="border-2 border-black rounded-md outline-none h-8 w-full p-4 font-[1.2rem]"
             />
           </div>
           <div className="navBtns ml-[1.4rem] w-1/5 h-full flex items-center justify-between">
-            <button className="bg-bgbtn my-border h-8 postBtn btn-hover text-4 font-bold w-[4.6rem]" onClick={handlePost}>
+            <button
+              className="bg-bgbtn my-border h-8 postBtn btn-hover text-4 font-bold w-[4.6rem]"
+              onClick={handlePost}
+            >
               <FaPlus />
               &nbsp; Post
             </button>
             {currentUser?.role === "user" ? (
-              <div className="usersBtn w-[70%]  flex justify-evenly">
-                <NavLink to="/user/dashboard">
+              <div className="usersBtn w-[70%] flex justify-evenly">
+                <NavLink target="_blank" to="/user/dashboard">
                   <button className="dashBtn my-border btn-hover w-[3.4rem] h-10 text-[1.4rem]">
                     <RiDashboardFill />
                   </button>
                 </NavLink>
-                <button className=" w-[4.4rem] text-[1.2rem] flex justify-between py-[0.6em] bg-primary" onClick={() => setTogglePro(!togglePro)} >
+                <button
+                  className="w-[4.4rem] text-[1.2rem] flex justify-between py-[0.6em] bg-primary"
+                  onClick={() => setTogglePro(!togglePro)}
+                >
                   <FaUser /> <FaAngleDown />
                 </button>
-                {
-                  togglePro && (<div className="absolute flex flex-col rigth-[-2] top-16 bg-black rounded-md p-4 z-10">
+                {togglePro && (
+                  <div className="absolute flex flex-col right-[-2] top-16 bg-black rounded-md p-4 z-10">
                     <h3 className="text-white">{currentUser?.name}</h3>
-                    <button onClick={handleLogout} className="text-red-500">Logout</button>
-                  </div>)
-                }
-
+                    <button onClick={handleLogout} className="text-red-500">
+                      Logout
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <NavLink to="/signin">
@@ -146,7 +182,7 @@ const Navbar = () => {
           />
         </div>
       </div>
-      {/* <PostForm /> */}
+      {openSearch && <Search myData={searchData} />}
     </nav>
   );
 };

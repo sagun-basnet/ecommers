@@ -4,6 +4,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import "../global/global.css";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { FaTag } from "react-icons/fa";
 
 // import { useEffect } from "react";
 import { AuthContext } from '../../context/authContext';
@@ -81,9 +82,26 @@ const Product = () => {
     const handleClick = (section) => {
         setActiveSection(section);
     }
+    function formatNumberCustom(number) {
+        // Convert the number to a string and reverse it for easier manipulation
+        let numStr = number.toString().split('').reverse().join('');
+
+        // Group the reversed string into the first 3 digits and the rest in pairs of 2
+        let firstPart = numStr.slice(0, 3);  // First 3 digits
+        let restPart = numStr.slice(3);      // Rest of the digits
+
+        // Group the rest digits in pairs of 2
+        let groupedRest = restPart.match(/.{1,2}/g) || [];
+
+        // Combine the first part and grouped rest with commas
+        let formattedNumber = firstPart + (groupedRest.length ? ',' + groupedRest.join(',') : '');
+
+        // Reverse the string back to its correct form and return it
+        return formattedNumber.split('').reverse().join('');
+    }
 
     return (
-        <div className='flex flex-col p-8'>
+        <div className='flex flex-col pt-6 px-6 pb-0'>
             <div className="flex justify-between">
                 <h1 className=''>Your Products:</h1>
                 <Link to="/post">
@@ -100,21 +118,26 @@ const Product = () => {
 
 
             {/* for all listed product */}
-            <div className={`bg-white grid grid-cols-3 gap-2 p-4 overflow-y-scroll no-scrollbar ${activeSection === 'myProducts' ? 'grid' : 'hidden'}`}>
+            <div className={` bg-white grid grid-cols-3 gap-2 p-4  no-scrollbar ${activeSection === 'myProducts' ? 'grid' : 'hidden'} h-[30rem] overflow-y-scroll`}>
+
+
                 {
                     myData.map((item) => {
                         return (
-                            !item.buyer_id &&
+
                             <div
-                                className="productMainDiv rounded-[0.6rem] h-[26rem] w-full px-[3%] my-border  flex flex-col gap-[0.6rem] bg-[#F1F5F9]"
-                                data-aos="fade-up"
+                                className="productMainDiv rounded-[0.6rem] h-[26rem] w-full px-[3%] my-border  flex flex-col gap-[0.6rem] bg-[#F1F5F9] relative"
+                            // data-aos="fade-up"
                             >
+                                <div className={`absolute ${item.buyer_id ? 'bg-red-500' : 'bg-green-500'} p-1 px-2 rounded-md left-0 flex items-center gap-1`}>
+                                    <FaTag /> {item.buyer_id ? "Solded" : "Sale"}
+                                </div>
                                 <div className="productMainImg h-1/2 w-full mt-2">
                                     <img className="h-full w-full" src={`http://localhost:8800${splitImagePaths(item.images)[0]}`} alt="" />
                                 </div>
                                 <div className="text-center mt-[-0.5rem]">
                                     <p className="text-[1.2rem] font-bold font-heading">Name: {item.pname}</p>
-                                    <p className="text-primary font-bold font-heading">Rs: {item.price}</p>
+                                    <p className="text-primary font-bold font-heading">Rs: {formatNumberCustom(item.price)}</p>
                                 </div>
                                 <div className="productImgs h-[20%] flex gap-[0.6rem] ">
                                     <div className="img1 pimg">
@@ -129,6 +152,8 @@ const Product = () => {
                                 </div>
                                 <div className="flex justify-center gap-2 ">
                                     <button onClick={() => navigate(`/product/${item.pid}`)} className='px-4 py-1 rounded-md bg-blue-500 hover:bg-blue-600 my-transition'>View</button>
+
+                                    <button onClick={() => navigate(`/product/${item.pid}`)} className='px-4 py-1 rounded-md bg-primary hover:bg-primary my-transition'>Edit</button>
 
 
 
@@ -147,7 +172,7 @@ const Product = () => {
 
             {/* for buyers request */}
 
-            <div className={`bg-white grid grid-cols-3 gap-2 p-4 overflow-y-scroll no-scrollbar ${activeSection === 'buyerRequest' ? 'grid' : 'hidden'}`}>
+            <div className={`bg-white grid grid-cols-3 gap-2 p-4 h-[30rem] overflow-y-scroll no-scrollbar ${activeSection === 'buyerRequest' ? 'grid' : 'hidden'}`}>
                 {
                     myData1.map((item) => {
                         return (
@@ -160,7 +185,7 @@ const Product = () => {
                                 </div>
                                 <div className="text-center mt-[-0.5rem]">
                                     <p className="text-[1.2rem] font-bold font-heading">Name: {item.pname}</p>
-                                    <p className="text-primary font-bold font-heading">Rs: {item.price}</p>
+                                    <p className="text-primary font-bold font-heading">Rs: {formatNumberCustom(item.price)}</p>
                                 </div>
                                 <div className="productImgs h-[20%] flex gap-[0.6rem] ">
                                     <div className="img1 pimg">

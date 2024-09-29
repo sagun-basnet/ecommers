@@ -63,6 +63,23 @@ const Checkout = () => {
         // console.log(response.data);
     }
 
+    function formatNumberCustom(number) {
+        // Convert the number to a string and reverse it for easier manipulation
+        let numStr = number.toString().split('').reverse().join('');
+        
+        // Group the reversed string into the first 3 digits and the rest in pairs of 2
+        let firstPart = numStr.slice(0, 3);  // First 3 digits
+        let restPart = numStr.slice(3);      // Rest of the digits
+        
+        // Group the rest digits in pairs of 2
+        let groupedRest = restPart.match(/.{1,2}/g) || [];
+        
+        // Combine the first part and grouped rest with commas
+        let formattedNumber = firstPart + (groupedRest.length ? ',' + groupedRest.join(',') : '');
+        
+        // Reverse the string back to its correct form and return it
+        return formattedNumber.split('').reverse().join('');
+    }
     // const products[0]? = products.find((product) => product.pid === parseInt(pid));
     return (
         <div className='w-full h-[100vh] my-flex font-heading'>

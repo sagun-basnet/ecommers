@@ -18,6 +18,7 @@ const SingleProduct = () => {
     const [imageArr, setImageArr] = useState([]);
     const [myMainImg, setMyMainImg] = useState(null);
     const [currType, setCurrType] = useState('');
+    const [currPrice, setCurrPrice] = useState(0);  // Current product price
 
     const loadData = async () => {
         const response = await axios.get(`http://localhost:8800/api/post/getPost/${pid}`);
@@ -34,6 +35,7 @@ const SingleProduct = () => {
             setImageArr(images);
             setMyMainImg(images[0]);
             setCurrType(products[0]?.type);
+            setCurrPrice(products[0]?.price);  // Set the current product price
         }
     }, [products]);
 
@@ -50,8 +52,20 @@ const SingleProduct = () => {
 
     const loadRelatedData = async () => {
         const response = await axios.get("http://localhost:8800/api/post/getAllPost");
-        const relatedProducts = response.data;
-        setRelated(relatedProducts);
+        const allProducts = response.data;
+
+        // Filter related products by category and price range (±20%)
+        const relatedProducts = allProducts.filter(product => {
+            return (
+                product.type === currType &&            
+                product.pid !== parseInt(pid) &&            
+                product.buyer_id === null &&               
+                product.price >= currPrice * 0.8 &&       
+                product.price <= currPrice * 1.2           
+            );
+        });
+
+        setRelated(relatedProducts.slice(0, 4));  // Limit to 4 related products
 
         const imagesArray = relatedProducts.map(product => splitImagePaths(product.images));
         setImgArr(imagesArray);
@@ -59,7 +73,7 @@ const SingleProduct = () => {
 
     useEffect(() => {
         loadRelatedData();
-    }, []);
+    }, [currType, currPrice]);  // Recalculate when type or price changes
 
     return (
         <div className="singleProduct flex h-[100vh] p-4">
@@ -103,12 +117,13 @@ const SingleProduct = () => {
                 <div className="flex justify-end w-full gap-4 font-bold">
                     {
                         currentUser ? (
-                            (currentUser.uid !== products[0]?.uid) ?
-                                (<Link to={`/product/checkout/${pid}`}>
+                            (currentUser.uid !== products[0]?.uid) ? (
+                                <Link to={`/product/checkout/${pid}`}>
                                     <button className='bg-primary p-2 px-4 rounded-lg'>Buy</button>
-                                </Link>) : (
-                                    <span className='flex items-center font-bold text-xl'>This is your product. You can't buy your own product.</span>
-                                )
+                                </Link>
+                            ) : (
+                                <span className='flex items-center font-bold text-xl'>This is your product. You can't buy your own product.</span>
+                            )
                         ) : (
                             <Link to="/signin">
                                 <button className='bg-primary p-2 px-4 rounded-lg'>Buy</button>
@@ -120,39 +135,27 @@ const SingleProduct = () => {
 
                 <div className='h-1 w-full bg-black'>&nbsp;</div>
 
-                {/* Related Product  */}
+                {/* Related Product Section */}
                 <div className="flex flex-col w-full items-center">
-                    <h2 className='text-primary'>Related Product</h2>
+                    <h2 className='text-primary'>Related Products</h2>
                     <div className="grid grid-cols-2 w-full gap-2 mt-6 relative">
-                        {related.length > 1 ? (
-                            related.some((product) =>
-                                parseInt(pid) !== product.pid &&
-                                product.buyer_id === null &&
-                                product.type === currType
-                            ) ? (
-                                related.map((product, index) => (
-                                    (parseInt(pid) !== product.pid) &&
-                                    (product.buyer_id === null) &&
-                                    (product.type === currType) && (
-                                        <div className="flex w-full border-2 border-black" key={product.pid}>
-                                            <div className="w-[40%] h-[8rem]">
-                                                <img src={`http://localhost:8800${imgArr[index][0]}`} alt="" />
-                                            </div>
-                                            <div className="flex flex-col p-2 border-l-2 w-[60%] items-center justify-center gap-1">
-                                                <span className='text-lg text-primary font-extrabold'>{product.pname}</span>
-                                                <span><span className="text-primary font-bold">Price: </span>Rs. {product.price}</span>
-                                                <div className="flex justify-center w-full">
-                                                    <button className='bg-primary p-1 px-2 font-bold rounded-md' onClick={() => handleMore(product.pid)}>more</button>
-                                                </div>
-                                            </div>
+                        {related.length > 0 ? (
+                            related.map((product, index) => (
+                                <div className="flex w-full border-2 border-black" key={product.pid}>
+                                    <div className="w-[40%] h-[8rem]">
+                                        <img src={`http://localhost:8800${imgArr[index][0]}`} alt="" />
+                                    </div>
+                                    <div className="flex flex-col p-2 border-l-2 w-[60%] items-center justify-center gap-1">
+                                        <span className='text-lg text-primary font-extrabold'>{product.pname}</span>
+                                        <span><span className="text-primary font-bold">Price: </span>Rs. {product.price}</span>
+                                        <div className="flex justify-center w-full">
+                                            <button className='bg-primary p-1 px-2 font-bold rounded-md' onClick={() => handleMore(product.pid)}>More</button>
                                         </div>
-                                    )
-                                ))
-                            ) : (
-                                <h1 className='text-red-600 absolute text-center'>No Related Product found</h1>
-                            )
+                                    </div>
+                                </div>
+                            ))
                         ) : (
-                            <h1 className='text-red-600 absolute text-center'>No Related Product found</h1>
+                            <h2 className='w-full text-red-600 absolute text-center'>No Related Products Found</h2>
                         )}
                     </div>
                 </div>
